@@ -17,6 +17,3 @@ Año: 2024 📅</h1><br>
   border-right-width: 20px;
   border-bottom-color: hotpink;
 }
-<div class="container">
-  <div class="box">Change my borders.</div>
-</div>
