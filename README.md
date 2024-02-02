@@ -5,5 +5,5 @@ Universidad: ECCI 🏫<br>
 Andrés Felipe Romero Medina<br> 
 Hola<br> 
 Año: 2024 📅</h1><br>
-<strong>Punto 1</strong>
+<h2 <strong>Punto 1</strong>< /h2><br>
 
