@@ -5,5 +5,5 @@ Universidad: ECCI 🏫<br>
 Andrés Felipe Romero Medina<br> 
 Nicolas Mejia Muñoz<br> 
 22/0/2024 📅</h1><br>
-<h2 <strong>Punto 1</strong>< /h2>
+<h2 <strong>Punto 1</strong></h2>
 
