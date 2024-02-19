@@ -2,11 +2,11 @@
 <h1 align="center">Taller 1 Python<br>
 Materia: Electiva de robótica<br>
 Universidad: ECCI 🏫<br>
-Andrés Felipe Romero Medina<br> 
-Nicolas Mejia Muñoz 🤖<br> 
+Andrés Felipe Romero Medina 🤖<br> 
+Nicolás Mejía Muñoz 🤖<br> 
 TALLER 1 <br>
 22/0/2024 📅</h1><br>
-<h2>Taller 1 – Python (código)</h2>
+<h2>Taller 1 – Python (código)🐍</h2>
 <h2>Sin interacción de consola</h2>
 <h4>Impresión de datos en consola</h4>
 <h2>Punto 1</h2>
