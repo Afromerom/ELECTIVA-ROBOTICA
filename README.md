@@ -6,11 +6,10 @@ Andrés Felipe Romero Medina<br>
 Nicolas Mejia Muñoz 🤖<br> 
 TALLER 1 <br>
 22/0/2024 📅</h1><br>
-<h2 <strong>Punto 1</strong></h2>
 <h2>Taller 1 – Python (código)</h2>
-<h3>Sin interacción de consola</h3>
+<h2>Sin interacción de consola</h2>
 <h4>Impresión de datos en consola</h4>
-
+<h2>Punto 1</h2>
 Realice un programa que sume, reste, multiplique (producto punto y producto cruz) y divida dos
 vectores previamente inicializados.
 
@@ -49,4 +48,11 @@ print("resta: ", resta_de_vectores(a, b))
 print("producto punto: ", ppunto_de_vectores(a, b))
 print("producto cruz: ", pcruz_de_vectores(a, b))
 print("division: ", division_de_vectores(a, b))
+```
+<h2>Punto 2</h2>
+Realice un programa que sume, reste, multiplique (producto punto y producto cruz) y divida dos
+matrices previamente inicializadas.
+
+```python
+
 ```
