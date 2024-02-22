@@ -17,19 +17,15 @@ vectores previamente inicializados.
 # Definición de dos vectores
 a = [1, 2, 3]
 b = [3, 4, 5]
-
 # Función para la suma de dos vectores
 def suma_de_vectores(a, b):
     return [x + y for x, y in zip(a, b)]
-
 # Función para la resta de dos vectores
 def resta_de_vectores(a, b):
     return [x - y for x, y in zip(a, b)]
-
 # Función para el producto punto (producto escalar) de dos vectores
 def ppunto_de_vectores(a, b):
     return sum(x * y for x, y in zip(a, b))
-
 # Función para el producto cruz de dos vectores en 3D
 def pcruz_de_vectores(a, b):
     return [
@@ -37,11 +33,9 @@ def pcruz_de_vectores(a, b):
         -(a[0] * b[2] - b[0] * a[2]),
         a[0] * b[1] - b[0] * a[1]
     ]
-
 # Función para la división de elementos correspondientes de dos vectores
 def division_de_vectores(a, b):
     return [x / y for x, y in zip(a, b)]
-
 # Impresión de los resultados
 print("suma: ", suma_de_vectores(a, b))
 print("resta: ", resta_de_vectores(a, b))
@@ -68,7 +62,6 @@ sum_result = sum_matrices(c, d)
 print("Suma de matrices:")
 for row in sum_result:
     print(row)
-
 c = ([1, 2, 3],[4,5,6],[7,8,9])
 d = ([3, 4, 5],[6,7,8],[9,10,11])
 def sum_matrices(c, d):
@@ -91,7 +84,6 @@ def producto_punto_matrices(matrix1, matrix2):
             for k in range(len(matrix2)):
                 result[i][j] += matrix1[i][k] * matrix2[k][j]
     return result
-# Ejemplo de uso
 matriz_A = [[1, 2, 3],[4,5,6],[7,8,9]]
 matriz_B = [[3, 4, 5],[6,7,8],[9,10,11]]
 resultado_producto_punto = producto_punto_matrices(matriz_A, matriz_B)
@@ -110,12 +102,9 @@ def producto_cruz_matrices(matrix1, matrix2):
         result[i][2] = matrix1[(i + 1) % 3][0] * matrix2[(i + 2) % 3][1] - matrix1[(i + 2) % 3][0] * matrix2[(i + 1) % 3][1]
 
     return result
-
-# Ejemplo de uso
 matriz_A = [[1, 2, 3],[4,5,6],[7,8,9]]
 matriz_B = [[3, 4, 5],[6,7,8],[9,10,11]]
 resultado_manual = producto_cruz_matrices(matriz_A, matriz_B)
-
 print("Producto cruz de las matrices A y B:")
 for fila in resultado_manual:
     print(fila)
@@ -127,20 +116,16 @@ deben consultar sobre el uso de funciones trigonométricas en Python.
 
 ```python
 import cmath
-
 # Programa coordenadas polares a cartesianas
 r = 50
 theta = 80 * (cmath.pi / 180)
-
 # Coordenadas polares a cartesianas
 x, y = cmath.polar(cmath.rect(r, theta))
 coordinates_polar_to_cartesian = f'Programa coordenadas polares a cartesianas y viceversa\nDe polares a rectangulares en la función r=50 θ=80°\nEl vector corresponde a: A=[{x} + {y}j]'
-
 # Programa coordenadas cartesianas a polares
 A = 80 + 60j
 r1, theta2 = cmath.polar(A)
 coordinates_cartesian_to_polar = f'De rectangulares a polares en la función 80+60i\nEl vector corresponde a: [r = {r1} , θ = {cmath.phase(A)*180/cmath.pi}°]'
-
 print(coordinates_polar_to_cartesian)
 print(coordinates_cartesian_to_polar)
 ```
@@ -150,28 +135,20 @@ Realice un programa para el cálculo de la resistencia de una RTD de platino (PT
 la temperatura.
 
 ```python
-# Programa para calcular la resistencia RTD de platino (PT100) en función de la temperatura
-
 # Definimos la temperatura
 Ta = 100  # °C
-
 # Definimos la resistencia medida
 R = 5000  # ohmios
-
 # Definimos el valor nominal de la resistencia a 0 °C
 R0 = 200  # ohmios
-
 # Definimos la temperatura inicial
 T = 0  # °C
-
 # Constantes de la ecuación de Callendar-Van Dusen
 A = 3.90830e-3
 B = -5.77500e-7
 C = -4.18301e-12
-
 # Calculamos la resistencia RTD de platino (PT100)
 rtd = R0 * (1 + A * T + B * T**2 + (T - 100) * C * T**3)
-
 # Mostramos el resultado
 print("El valor de la resistencia RTD de platino (PT100) a", Ta, "°C es:", rtd, "ohmios")
 ```
@@ -180,9 +157,9 @@ Realice en funciones las rotaciones en X, Y y Z, donde se tenga un parámetro de
 
 ```python
 import numpy as np
-
-grado = 90
-
+rotarx = 90
+rotary = 90
+rotarz = 90
 def rotation_matrix_x(angle):
     radian_angle = np.radians(angle)
     return np.array([
@@ -190,7 +167,6 @@ def rotation_matrix_x(angle):
         [0, np.cos(radian_angle), -np.sin(radian_angle)],
         [0, np.sin(radian_angle), np.cos(radian_angle)]
     ])
-
 def rotation_matrix_y(angle):
     radian_angle = np.radians(angle)
     return np.array([
@@ -198,7 +174,6 @@ def rotation_matrix_y(angle):
         [0, 1, 0],
         [-np.sin(radian_angle), 0, np.cos(radian_angle)]
     ])
-
 def rotation_matrix_z(angle):
     radian_angle = np.radians(angle)
     return np.array([
@@ -206,16 +181,13 @@ def rotation_matrix_z(angle):
         [np.sin(radian_angle), np.cos(radian_angle), 0],
         [0, 0, 1]
     ])
-
 # Imprimir matrices de rotación de 90 grados
 print("Matriz de rotación alrededor del eje X (90°):")
-print(rotation_matrix_x(grado))
-
+print(rotation_matrix_x(rotarx))
 print("\nMatriz de rotación alrededor del eje Y (90°):")
-print(rotation_matrix_y(grado))
-
+print(rotation_matrix_y(rotary))
 print("\nMatriz de rotación alrededor del eje Z (90°):")
-print(rotation_matrix_z(grado))
+print(rotation_matrix_z(rotarz))
 ```
 <h2>Punto 6</h2>
 Realice un programa que calcule la fuerza de avance y retroceso de un cilindro neumático de doble
@@ -223,35 +195,22 @@ efecto. Debe establecer previamente los valores de presión, así como las dimen
 cilindro para realizar el cálculo.
 
 ```python
-print("**************************************************")
-print("Programa que calcula la fuerza de empuje y retroceso")
-print("**************************************************")
-
 #Definimos los valores del radio externo e interno
 radio_externo = 50
 radio_interno = 15
-
 #Definimos el valor de la presión
 presion = 20
-
 #Calculamos el área del cilindro mayor
 area_salida = 3.14159 * radio_externo**2
-
 #Calculamos la fuerza de salida
 fuerza_salida = presion * area_salida
-
 #Calculamos el área de entrada
 area_entrada = area_salida - (3.14159 * radio_interno**2)
-
 #Calculamos la fuerza de entrada
 fuerza_entrada = presion * area_entrada
-
 #Mostramos los resultados en pantalla
 print(f"El valor de la fuerza de salida es: {fuerza_salida} N")
 print(f"El valor de la fuerza de entrada es: {fuerza_entrada} N")
-
-print("**************************************************")
-print("\n")
 ```
 
 <h4>Con interacción de consola (fprintf o disp) y teclado (input)</h4>
@@ -280,14 +239,11 @@ Realice un programa que calcule X números aleatorios en un rango determinado po
 
 ```python
 import random
-
 # Solicitar al usuario el rango
 inicio = int(input('Ingrese el valor inicial del rango: '))
 fin = int(input('Ingrese el valor final del rango: '))
-
 # Solicitar al usuario la cantidad de números aleatorios
 cantidad_numeros = int(input('Ingrese la cantidad de números aleatorios que desea generar: '))
-
 # Generar y mostrar los números aleatorios
 print(f'\nNúmeros aleatorios en el rango [{inicio}, {fin}]:')
 for _ in range(cantidad_numeros):
@@ -350,7 +306,6 @@ print('Programa Robots')  # Plasmamos en pantalla
 print('1.Robot Cilindrico')  # Plasmamos en pantalla
 print('2.Robot Cartesiano')  # Plasmamos en pantalla
 print('3.Robot Esferico')  # Plasmamos en pantalla
-
 opt = int(input('Ingrese la figura que desea validar: '))  # Definimos la opción en pantalla
 
 if opt == 1:  # Caso 1
@@ -364,8 +319,6 @@ elif opt == 3:  # Caso 3
     print('Posee articulaciones rotacional, rotacional, prismatico')  # Plasmamos en pantalla
 else:
     print('Opción no válida')  # Manejo de opción no válida
-
-# 1Fin del proceso
 ```
 
 <h2>Punto 5</h2>
@@ -381,3 +334,4 @@ while respuesta == 'Si':  # Mientras que la respuesta sea 'Si'
     print('¿Desea continuar? (s=si)(n=no)')  # Preguntar Desea continuar Si/No
     respuesta = input()
 ```
+<h4>Uso de las funciones para graficar</h4>
