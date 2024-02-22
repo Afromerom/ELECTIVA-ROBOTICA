@@ -179,15 +179,43 @@ print("El valor de la resistencia RTD de platino (PT100) a", Ta, "°C es:", rtd,
 Realice en funciones las rotaciones en X, Y y Z, donde se tenga un parámetro de entrada (ángulo) y un parámetro de salida (matriz).
 
 ```python
+import numpy as np
 
+grado = 90
 
+def rotation_matrix_x(angle):
+    radian_angle = np.radians(angle)
+    return np.array([
+        [1, 0, 0],
+        [0, np.cos(radian_angle), -np.sin(radian_angle)],
+        [0, np.sin(radian_angle), np.cos(radian_angle)]
+    ])
 
-def matx():
-    matriz_xv = [[1, 0, 0],[0, cos(B), -sin(B)],[0, sin(B), cos(B)]]
-    
+def rotation_matrix_y(angle):
+    radian_angle = np.radians(angle)
+    return np.array([
+        [np.cos(radian_angle), 0, np.sin(radian_angle)],
+        [0, 1, 0],
+        [-np.sin(radian_angle), 0, np.cos(radian_angle)]
+    ])
 
-    
-    return result
+def rotation_matrix_z(angle):
+    radian_angle = np.radians(angle)
+    return np.array([
+        [np.cos(radian_angle), -np.sin(radian_angle), 0],
+        [np.sin(radian_angle), np.cos(radian_angle), 0],
+        [0, 0, 1]
+    ])
+
+# Imprimir matrices de rotación de 90 grados
+print("Matriz de rotación alrededor del eje X (90°):")
+print(rotation_matrix_x(grado))
+
+print("\nMatriz de rotación alrededor del eje Y (90°):")
+print(rotation_matrix_y(grado))
+
+print("\nMatriz de rotación alrededor del eje Z (90°):")
+print(rotation_matrix_z(grado))
 ```
 <h2>Punto 6</h2>
 Realice un programa que calcule la fuerza de avance y retroceso de un cilindro neumático de doble
@@ -195,10 +223,6 @@ efecto. Debe establecer previamente los valores de presión, así como las dimen
 cilindro para realizar el cálculo.
 
 ```python
-#Programa que calcula la fuerza de avance y retroceso de un cilindro neumático
-
-#Limpiamos la consola y las variables
-print("\n")
 print("**************************************************")
 print("Programa que calcula la fuerza de empuje y retroceso")
 print("**************************************************")
@@ -230,9 +254,130 @@ print("**************************************************")
 print("\n")
 ```
 
-<h2>Punto 6</h2>
+<h4>Con interacción de consola (fprintf o disp) y teclado (input)</h4>
 
+<h2>Punto 1</h2>
+Realice un programa que calcule la potencia que consume un circuito ingresando por teclado el
+valor de corriente y voltaje.
 
 ```python
+print('Programa calculo de la potencia de un circuito')  # Plasmamos en pantalla
 
+# Tomamos las variables del usuario
+v = float(input('Escriba el voltaje del circuito: '))
+k = float(input('Escriba la corriente del circuito: '))
+
+# Calculamos el valor de la potencia
+pot = v * k
+
+# Plasmamos en pantalla el resultado
+result_message = f'La potencia del voltaje: {v} V y la corriente: {k} mA corresponde a: {pot} watts.'
+print(result_message)
+```
+
+<h2>Punto 2</h2>
+Realice un programa que calcule X números aleatorios en un rango determinado por el usuario.
+
+```python
+import random
+
+# Solicitar al usuario el rango
+inicio = int(input('Ingrese el valor inicial del rango: '))
+fin = int(input('Ingrese el valor final del rango: '))
+
+# Solicitar al usuario la cantidad de números aleatorios
+cantidad_numeros = int(input('Ingrese la cantidad de números aleatorios que desea generar: '))
+
+# Generar y mostrar los números aleatorios
+print(f'\nNúmeros aleatorios en el rango [{inicio}, {fin}]:')
+for _ in range(cantidad_numeros):
+    numero_aleatorio = random.randint(inicio, fin)
+    print(numero_aleatorio)
+```
+
+<h2>Punto 3</h2>
+Realice un programa para el cálculo de volúmenes (Prisma, Pirámide, Cono truncado, Cilindro)
+donde el usuario pueda seleccionar el sólido y los parámetros de cada volumen.
+
+```python
+import math
+# Programa de calculo de áreas
+print('Programa calculo de volumenes')
+print('1. Cálculo de volumen de Prisma')
+print('2. Cálculo de volumen de Piramide')
+print('3. Cálculo de volumen de Cono Truncado')
+print('4. Cálculo de volumen de Cilindro')
+
+opt = int(input('Ingrese la figura que desea validar: '))
+
+if opt == 1:
+    print('1. Cálculo de volumen de Prisma')
+    l = float(input('Escriba el valor del lado: '))
+    b = float(input('Escriba el valor de la base: '))
+    h = float(input('Escriba el valor de la altura: '))
+    vpris = l * b * h
+    print(f'El volumen del Prisma corresponde a: {vpris} m³')
+elif opt == 2:
+    print('2. Cálculo de volumen de la piramide')
+    b1 = float(input('Escriba el valor de la base: '))
+    h1 = float(input('Escriba el valor de la altura: '))
+    vpi = (1/3) * (b1 * h1)
+    print(f'El volumen de la Piramide corresponde a: {vpi} m³')
+elif opt == 3:
+    print('3. Cálculo de volumen del Cono Truncado')
+    R = float(input('Escriba el valor del radio de la base inferior: '))
+    r = float(input('Escriba el valor del radio de la base superior: '))
+    h2 = float(input('Escriba el valor de la altura: '))
+    vct = ((h2 * math.pi) / 3) * (R**2 + r**2 + R * r)
+    print(f'El volumen del Cono truncado corresponde a: {vct} m³')
+elif opt == 4:
+    print('4. Cálculo de volumen de Cilindro')
+    al = float(input('Escriba el valor de la altura: '))
+    ra = float(input('Escriba el valor del radio: '))
+    vci = math.pi * ra**2 * al
+    print(f'El volumen del Cilindro corresponde a: {vci} m³')
+else:
+    print('Opción no válida')
+
+```
+<h2>Punto 4</h2>
+Realice un programa que le permita al usuario escoger entre robot Cilíndrico, Cartesiano y esférico,
+donde como respuesta a la selección conteste con el tipo y número de articulaciones que posee.
+
+```python
+# Programa Robots
+print('Programa Robots')  # Plasmamos en pantalla
+print('1.Robot Cilindrico')  # Plasmamos en pantalla
+print('2.Robot Cartesiano')  # Plasmamos en pantalla
+print('3.Robot Esferico')  # Plasmamos en pantalla
+
+opt = int(input('Ingrese la figura que desea validar: '))  # Definimos la opción en pantalla
+
+if opt == 1:  # Caso 1
+    print('1.Robot Cilindrico')  # Plasmamos en pantalla
+    print('Posee articulaciones rotacional, prismatico, prismatico ')  # Plasmamos en pantalla
+elif opt == 2:  # Caso 2
+    print('2.Robot Cartesiano')  # Plasmamos en pantalla
+    print('Posee articulaciones prismatico, prismatico, prismatico')  # Plasmamos en pantalla
+elif opt == 3:  # Caso 3
+    print('3.Robot Esferico')  # Plasmamos en pantalla
+    print('Posee articulaciones rotacional, rotacional, prismatico')  # Plasmamos en pantalla
+else:
+    print('Opción no válida')  # Manejo de opción no válida
+
+# 1Fin del proceso
+```
+
+<h2>Punto 5</h2>
+Escribir un programa que realice la pregunta ¿Desea continuar Si/No? y que no deje de hacerla
+hasta que el usuario teclee No.
+
+```python
+print('Programa promedio de Pregunta S/N')
+
+respuesta = 'Si'  # Definimos la respuesta como 's'
+
+while respuesta == 'Si':  # Mientras que la respuesta sea 'Si'
+    print('¿Desea continuar? (s=si)(n=no)')  # Preguntar Desea continuar Si/No
+    respuesta = input()
 ```
