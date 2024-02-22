@@ -229,3 +229,10 @@ print(f"El valor de la fuerza de entrada es: {fuerza_entrada} N")
 print("**************************************************")
 print("\n")
 ```
+
+<h2>Punto 6</h2>
+
+
+```python
+
+```
