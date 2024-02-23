@@ -48,35 +48,39 @@ Realice un programa que sume, reste, multiplique (producto punto y producto cruz
 matrices previamente inicializadas.
 
 ```python
-c = ([1, 2, 3],[4,5,6],[7,8,9])
-d = ([3, 4, 5],[6,7,8],[9,10,11])
-def sum_matrices(c, d):
+import numpy as np
+# Definir dos matrices para el producto punto
+matriz_A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+matriz_B = [[3, 4, 5], [6, 7, 8], [9, 10, 11]]
+############### SUMA ###############################
+def sum_matrices(matriz_A, matriz_B):
     result = []
-    for i in range(len(c)):
+    for i in range(len(matriz_A)):
         row = []
-        for j in range(len(c[0])):
-            row.append(c[i][j] + d[i][j])
+        for j in range(len(matriz_A[0])):
+            row.append(matriz_A[i][j] + matriz_B[i][j])
         result.append(row)
     return result
-sum_result = sum_matrices(c, d)
+# Calcular la suma de las matrices c y d
+sum_result = sum_matrices(matriz_A , matriz_B)
 print("Suma de matrices:")
 for row in sum_result:
     print(row)
-c = ([1, 2, 3],[4,5,6],[7,8,9])
-d = ([3, 4, 5],[6,7,8],[9,10,11])
-def sum_matrices(c, d):
+############### RESTA ##############################
+def rest_matrices(matriz_A , matriz_B):
     result = []
-    for i in range(len(c)):
+    for i in range(len(matriz_A )):
         row = []
-        for j in range(len(c[0])):
-            row.append(c[i][j] - d[i][j])
+        for j in range(len(matriz_A[0])):
+            row.append(matriz_A [i][j] - matriz_B[i][j])
         result.append(row)
     return result
-sum_result = sum_matrices(c, d)
+# Calcular la resta de las matrices c y d
+rest_result = rest_matrices(matriz_A , matriz_B)
 print("Resta de matrices:")
-for row in sum_result:
+for row in rest_result:
     print(row)
-###########################################################################################
+################## PRODUCTO PUNTO ##################
 def producto_punto_matrices(matrix1, matrix2):
     result = [[0] * len(matrix2[0]) for _ in range(len(matrix1))]
     for i in range(len(matrix1)):
@@ -84,13 +88,12 @@ def producto_punto_matrices(matrix1, matrix2):
             for k in range(len(matrix2)):
                 result[i][j] += matrix1[i][k] * matrix2[k][j]
     return result
-matriz_A = [[1, 2, 3],[4,5,6],[7,8,9]]
-matriz_B = [[3, 4, 5],[6,7,8],[9,10,11]]
+# Calcular el producto punto de las matrices A y B
 resultado_producto_punto = producto_punto_matrices(matriz_A, matriz_B)
 print("Producto punto de las matrices A y B:")
 for fila in resultado_producto_punto:
     print(fila)
-############################################################################################
+################## PRODUCTO CRUZ ###################
 def producto_cruz_matrices(matrix1, matrix2):
     if len(matrix1) != 3 or len(matrix2) != 3:
         raise ValueError("Las matrices deben ser de dimensiones 3x3 para el producto cruz.")
@@ -102,12 +105,18 @@ def producto_cruz_matrices(matrix1, matrix2):
         result[i][2] = matrix1[(i + 1) % 3][0] * matrix2[(i + 2) % 3][1] - matrix1[(i + 2) % 3][0] * matrix2[(i + 1) % 3][1]
 
     return result
-matriz_A = [[1, 2, 3],[4,5,6],[7,8,9]]
-matriz_B = [[3, 4, 5],[6,7,8],[9,10,11]]
+# Calcular el producto cruz de las matrices A y B
 resultado_manual = producto_cruz_matrices(matriz_A, matriz_B)
 print("Producto cruz de las matrices A y B:")
 for fila in resultado_manual:
     print(fila)
+################## DIVISIÓN ########################
+def dividir_matrices(matriz1, matriz2):
+    # Realizar la división elemento por elemento utilizando numpy
+    resultado = np.divide(matriz1, matriz2)
+    return resultado
+# Calcular la división elemento por elemento de las matrices A y B
+print("La división entre las matrices A y B:", dividir_matrices(matriz_A, matriz_B))
 ```
 
 <h2>Punto 3</h2>
@@ -338,7 +347,25 @@ while respuesta == 'Si':  # Mientras que la respuesta sea 'Si'
 Realice un programa que grafique el comportamiento de un sensor PT100 desde -200°C a 200°C.
 
 ```python
-
+import numpy as np
+import matplotlib.pyplot as plt
+# Definir el rango de temperatura de -200°C a 200°C
+temperaturas = np.linspace(-200, 200, 400)
+# Simular el comportamiento del sensor PT100 (esto es solo un ejemplo, no representa la realidad)
+# Puedes ajustar los valores de la resistencia en función de la temperatura según la tabla de calibración de un PT100 real
+resistencia_referencia = 100.0  # Resistencia a 0°C (valor de referencia)
+coeficiente_temperatura = 0.00385  # Coeficiente de temperatura del PT100
+# Calcular la resistencia en función de la temperatura
+resistencias = resistencia_referencia * (1 + coeficiente_temperatura * temperaturas)
+# Graficar el comportamiento del sensor PT100
+plt.figure(figsize=(10, 6))
+plt.plot(temperaturas, resistencias, label='Sensor PT100')
+plt.xlabel('Temperatura (°C)')
+plt.ylabel('Resistencia (Ohmios)')
+plt.title('Comportamiento del Sensor PT100')
+plt.legend()
+plt.grid(True)
+plt.show()
 ```
 
 <h2>Punto 2</h2>
@@ -347,7 +374,39 @@ transferencia de segundo orden y graficar su comportamiento, además se debe mos
 de sistema es: subamortiguado, criticamente amortiguado y sobreamortiguado.
 
 ```python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
 
+def graficar_respuesta_2do_orden(omega_n, zeta):
+    # Crear la función de transferencia de segundo orden
+    sistema = signal.TransferFunction([omega_n**2], [1, 2*zeta*omega_n, omega_n**2])
+
+    # Generar la respuesta al escalón
+    tiempo, respuesta = signal.step(sistema)
+
+    # Determinar el tipo de sistema
+    if zeta < 1:
+        tipo_sistema = "Subamortiguado"
+    elif zeta == 1:
+        tipo_sistema = "Críticamente Amortiguado"
+    else:
+        tipo_sistema = "Sobreamortiguado"
+
+    # Graficar la respuesta al escalón
+    plt.plot(tiempo, respuesta)
+    plt.title(f"Respuesta de un sistema de segundo orden\nTipo: {tipo_sistema}")
+    plt.xlabel('Tiempo')
+    plt.ylabel('Respuesta al escalón')
+    plt.grid(True)
+    plt.show()
+
+# Solicitar al usuario que ingrese los coeficientes
+omega_n = float(input("Ingrese la frecuencia natural (omega_n): "))
+zeta = float(input("Ingrese el coeficiente de amortiguamiento (zeta): "))
+
+# Llamar a la función para graficar la respuesta
+graficar_respuesta_2do_orden(omega_n, zeta)
 ```
 <h2>Punto 3</h2>
 Implemente la ecuación de carga y descarga para un circuito RC. El usuario ingresa por teclado el
