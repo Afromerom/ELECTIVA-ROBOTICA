@@ -1,80 +1,27 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
+def carga_descarga_RC(V, C, R, tiempo):
+    tau = R * C  # Constante de tiempo del circuito RC
+    voltajes = [V * (1 - np.exp(-t / tau)) for t in tiempo]
+    return voltajes
 
-# Definir dos matrices para el producto punto
-matriz_A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-matriz_B = [[3, 4, 5], [6, 7, 8], [9, 10, 11]]
+def graficar_carga_descarga(tiempo, voltajes):
+    plt.plot(tiempo, voltajes, label='Carga/Descarga')
+    plt.xlabel('Tiempo (s)')
+    plt.ylabel('Voltaje (V)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-############### SUMA ###############################
-def sum_matrices(matriz_A, matriz_B):
-    result = []
-    for i in range(len(matriz_A)):
-        row = []
-        for j in range(len(matriz_A[0])):
-            row.append(matriz_A[i][j] + matriz_B[i][j])
-        result.append(row)
-    return result
+# Solicitar entrada al usuario
+V = float(input("Ingrese el voltaje inicial (V): "))
+C = float(input("Ingrese la capacitancia (F): "))
+R = float(input("Ingrese la resistencia (ohmios): "))
+tiempo = np.linspace(0, 5 * R * C, 1000)  # 1000 puntos en el intervalo de carga y descarga
 
-# Calcular la suma de las matrices c y d
-sum_result = sum_matrices(matriz_A , matriz_B)
-print("Suma de matrices:")
-for row in sum_result:
-    print(row)
+# Calcular voltajes
+voltajes = carga_descarga_RC(V, C, R, tiempo)
 
-############### RESTA ##############################
-def rest_matrices(matriz_A , matriz_B):
-    result = []
-    for i in range(len(matriz_A )):
-        row = []
-        for j in range(len(matriz_A[0])):
-            row.append(matriz_A [i][j] - matriz_B[i][j])
-        result.append(row)
-    return result
-
-# Calcular la resta de las matrices c y d
-rest_result = rest_matrices(matriz_A , matriz_B)
-print("Resta de matrices:")
-for row in rest_result:
-    print(row)
-
-################## PRODUCTO PUNTO ##################
-def producto_punto_matrices(matrix1, matrix2):
-    result = [[0] * len(matrix2[0]) for _ in range(len(matrix1))]
-    for i in range(len(matrix1)):
-        for j in range(len(matrix2[0])):
-            for k in range(len(matrix2)):
-                result[i][j] += matrix1[i][k] * matrix2[k][j]
-    return result
-# Calcular el producto punto de las matrices A y B
-resultado_producto_punto = producto_punto_matrices(matriz_A, matriz_B)
-print("Producto punto de las matrices A y B:")
-for fila in resultado_producto_punto:
-    print(fila)
-
-################## PRODUCTO CRUZ ###################
-def producto_cruz_matrices(matrix1, matrix2):
-    if len(matrix1) != 3 or len(matrix2) != 3:
-        raise ValueError("Las matrices deben ser de dimensiones 3x3 para el producto cruz.")
-
-    result = [[0] * 3 for _ in range(3)]
-    for i in range(3):
-        result[i][0] = matrix1[(i + 1) % 3][1] * matrix2[(i + 2) % 3][2] - matrix1[(i + 2) % 3][1] * matrix2[(i + 1) % 3][2]
-        result[i][1] = matrix1[(i + 2) % 3][0] * matrix2[(i + 1) % 3][2] - matrix1[(i + 1) % 3][0] * matrix2[(i + 2) % 3][2]
-        result[i][2] = matrix1[(i + 1) % 3][0] * matrix2[(i + 2) % 3][1] - matrix1[(i + 2) % 3][0] * matrix2[(i + 1) % 3][1]
-
-    return result
-
-# Calcular el producto cruz de las matrices A y B
-resultado_manual = producto_cruz_matrices(matriz_A, matriz_B)
-print("Producto cruz de las matrices A y B:")
-for fila in resultado_manual:
-    print(fila)
-
-################## DIVISIÓN ########################
-def dividir_matrices(matriz1, matriz2):
-    # Realizar la división elemento por elemento utilizando numpy
-    resultado = np.divide(matriz1, matriz2)
-    return resultado
-
-# Calcular la división elemento por elemento de las matrices A y B
-print("La división entre las matrices A y B:", dividir_matrices(matriz_A, matriz_B))
+# Graficar
+graficar_carga_descarga(tiempo, voltajes)
