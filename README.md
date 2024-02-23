@@ -231,8 +231,8 @@ valor de corriente y voltaje.
 ```python
 print('Programa calculo de la potencia de un circuito')  # Plasmamos en pantalla
 # Tomamos las variables del usuario
-v = float(input('Escriba el voltaje del circuito: '))
-k = float(input('Escriba la corriente del circuito: '))
+v = float(input('Escriba el voltaje (V) del circuito: '))
+k = float(input('Escriba la corriente (A) del circuito: '))
 # Calculamos el valor de la potencia
 pot = v * k
 # Plasmamos en pantalla el resultado
@@ -332,13 +332,13 @@ Escribir un programa que realice la pregunta ¿Desea continuar Si/No? y que no d
 hasta que el usuario teclee No.
 
 ```python
-print('Programa promedio de Pregunta S/N')
+while True:
+    respuesta = input("¿Desea continuar Si/No? ")
 
-respuesta = 'Si'  # Definimos la respuesta como 's'
-
-while respuesta == 'Si':  # Mientras que la respuesta sea 'Si'
-    print('¿Desea continuar? (s=si)(n=no)')  # Preguntar Desea continuar Si/No
-    respuesta = input()
+    if respuesta == "no":
+        break
+    elif respuesta != "si":
+        print("Por favor, ingrese Si o No.")
 ```
 <h4>Uso de las funciones para graficar</h4>
 
