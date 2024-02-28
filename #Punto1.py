@@ -1,40 +1,36 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal
 
-# Función para determinar el tipo de sistema
-def determinar_tipo_sistema(zeta):
-    if zeta < 1:
-        return "Subamortiguado"
-    elif zeta == 1:
-        return "Críticamente Amortiguado"
+def carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia, carga=True):
+    tau = resistencia * capacitancia  # Constante de tiempo (tau)
+    if carga:
+        return voltaje * (1 - np.exp(-tiempo / tau))
     else:
-        return "Sobreamortiguado"
+        return voltaje * np.exp(-tiempo / tau)
 
-# Solicitar al usuario ingresar los coeficientes
-omega_n = float(input("Ingrese la frecuencia natural (omega_n): "))
-zeta = float(input("Ingrese el coeficiente de amortiguamiento (zeta): "))
-ganancia = float(input("Ingrese la ganancia: "))
+def convertir_a_microfaradios(valor_faradios):
+    return valor_faradios * 1e6
 
-# Crear la función de transferencia de segundo orden
-num = [ganancia * omega_n**2]
-den = [1, 2 * zeta * omega_n, omega_n**2]
-system = signal.TransferFunction(num, den)
+# Entrada de usuario
+voltaje = float(input("Ingrese el valor de voltaje (V): "))
+resistencia = float(input("Ingrese el valor de resistencia (ohmios): "))
+capacitancia_faradios = float(input("Ingrese el valor de capacitancia (micro faradios): "))
 
-# Determinar el tipo de sistema
-tipo_sistema = determinar_tipo_sistema(zeta)
-print(f"El sistema es {tipo_sistema}")
+# Conversión a microfaradios
+capacitancia_microfaradios = convertir_a_microfaradios(capacitancia_faradios)
 
-# Crear un rango de tiempo
-t = np.linspace(0, 10, 1000)
+# Generar datos para la gráfica
+tiempo = np.linspace(0, 5 * resistencia * capacitancia_faradios, 1000)
+voltajes_carga = carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia_faradios, carga=True)
+voltajes_descarga = carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia_faradios, carga=False)
 
-# Calcular la respuesta del sistema al impulso
-t, y = signal.step(system, T=t)
-
-# Graficar la respuesta del sistema
-plt.plot(t, y)
-plt.title('Respuesta del Sistema de Segundo Orden')
-plt.xlabel('Tiempo')
-plt.ylabel('Respuesta')
+# Graficar
+plt.figure(figsize=(10, 6))
+plt.plot(tiempo, voltajes_carga, label='Carga')
+plt.plot(tiempo, voltajes_descarga, label='Descarga')
+plt.title('Carga y Descarga en un Circuito RC')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (V)')
+plt.legend()
 plt.grid(True)
 plt.show()

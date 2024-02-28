@@ -437,30 +437,39 @@ gráfica.
 import numpy as np
 import matplotlib.pyplot as plt
 
-def carga_descarga_RC(V, C, R, tiempo):
-    tau = R * C  # Constante de tiempo del circuito RC
-    voltajes = [V * (1 - np.exp(-t / tau)) for t in tiempo]
-    return voltajes
+def carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia, carga=True):
+    tau = resistencia * capacitancia  # Constante de tiempo (tau)
+    if carga:
+        return voltaje * (1 - np.exp(-tiempo / tau))
+    else:
+        return voltaje * np.exp(-tiempo / tau)
 
-def graficar_carga_descarga(tiempo, voltajes):
-    plt.plot(tiempo, voltajes, label='Carga/Descarga')
-    plt.xlabel('Tiempo (s)')
-    plt.ylabel('Voltaje (V)')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+def convertir_a_microfaradios(valor_faradios):
+    return valor_faradios * 1e6
 
-# Solicitar entrada al usuario
-V = float(input("Ingrese el voltaje inicial (V): "))
-C = float(input("Ingrese la capacitancia (F): "))
-R = float(input("Ingrese la resistencia (ohmios): "))
-tiempo = np.linspace(0, 5 * R * C, 1000)  # 1000 puntos en el intervalo de carga y descarga
+# Entrada de usuario
+voltaje = float(input("Ingrese el valor de voltaje (V): "))
+resistencia = float(input("Ingrese el valor de resistencia (ohmios): "))
+capacitancia_faradios = float(input("Ingrese el valor de capacitancia (micro faradios): "))
 
-# Calcular voltajes
-voltajes = carga_descarga_RC(V, C, R, tiempo)
+# Conversión a microfaradios
+capacitancia_microfaradios = convertir_a_microfaradios(capacitancia_faradios)
+
+# Generar datos para la gráfica
+tiempo = np.linspace(0, 5 * resistencia * capacitancia_faradios, 1000)
+voltajes_carga = carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia_faradios, carga=True)
+voltajes_descarga = carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia_faradios, carga=False)
 
 # Graficar
-graficar_carga_descarga(tiempo, voltajes)
+plt.figure(figsize=(10, 6))
+plt.plot(tiempo, voltajes_carga, label='Carga')
+plt.plot(tiempo, voltajes_descarga, label='Descarga')
+plt.title('Carga y Descarga en un Circuito RC')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Voltaje (V)')
+plt.legend()
+plt.grid(True)
+plt.show()
 ```
 
 <h2>Punto 4</h2>
