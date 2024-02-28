@@ -1,36 +1,22 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
-def carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia, carga=True):
-    tau = resistencia * capacitancia  # Constante de tiempo (tau)
-    if carga:
-        return voltaje * (1 - np.exp(-tiempo / tau))
-    else:
-        return voltaje * np.exp(-tiempo / tau)
+def pt100_resistencia_superior(temperatura):
+    
+    R0 = 100.0  # Resistencia nominal a 0°C para la PT100
+    A = 3.9083e-3
+    B = -5.775e-7
+    # Ecuación superior de la PT100: R(T) = R0 * (1 + A * T + B * T^2)
+    resistencia_superior = R0 * (1 + A * temperatura + B * temperatura**2)
+    return resistencia_superior
 
-def convertir_a_microfaradios(valor_faradios):
-    return valor_faradios * 1e6
+def pt100_resistencia_inferior(temperatura):
+    R0 = 100.0  # Resistencia nominal a 0°C para la PT100
+    A = 3.9083e-3
+    B = -5.775e-7
+    C = -4.183e-12
+    # Ecuación inferior de la PT100: R(T) = R0 * (1 + A * T + B * T^2)
+    resistencia_inferior = R0 * (1 + A * temperatura + B * temperatura**2 + C * (temperatura- 100) * temperatura**3)
+    return resistencia_inferior
+temperatura =50
 
-# Entrada de usuario
-voltaje = float(input("Ingrese el valor de voltaje (V): "))
-resistencia = float(input("Ingrese el valor de resistencia (ohmios): "))
-capacitancia_faradios = float(input("Ingrese el valor de capacitancia (micro faradios): "))
-
-# Conversión a microfaradios
-capacitancia_microfaradios = convertir_a_microfaradios(capacitancia_faradios)
-
-# Generar datos para la gráfica
-tiempo = np.linspace(0, 5 * resistencia * capacitancia_faradios, 1000)
-voltajes_carga = carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia_faradios, carga=True)
-voltajes_descarga = carga_descarga_RC(tiempo, voltaje, resistencia, capacitancia_faradios, carga=False)
-
-# Graficar
-plt.figure(figsize=(10, 6))
-plt.plot(tiempo, voltajes_carga, label='Carga')
-plt.plot(tiempo, voltajes_descarga, label='Descarga')
-plt.title('Carga y Descarga en un Circuito RC')
-plt.xlabel('Tiempo (s)')
-plt.ylabel('Voltaje (V)')
-plt.legend()
-plt.grid(True)
-plt.show()
+print("El valor de la resistencia RTD de platino (PT100) a", pt100_resistencia_superior(temperatura),"ohmios")

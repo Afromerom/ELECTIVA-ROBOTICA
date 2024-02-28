@@ -157,22 +157,28 @@ Realice un programa para el cálculo de la resistencia de una RTD de platino (PT
 la temperatura.
 
 ```python
-# Definimos la temperatura
-Ta = 100  # °C
-# Definimos la resistencia medida
-R = 5000  # ohmios
-# Definimos el valor nominal de la resistencia a 0 °C
-R0 = 200  # ohmios
-# Definimos la temperatura inicial
-T = 0  # °C
-# Constantes de la ecuación de Callendar-Van Dusen
-A = 3.90830e-3
-B = -5.77500e-7
-C = -4.18301e-12
-# Calculamos la resistencia RTD de platino (PT100)
-rtd = R0 * (1 + A * T + B * T**2 + (T - 100) * C * T**3)
-# Mostramos el resultado
-print("El valor de la resistencia RTD de platino (PT100) a", Ta, "°C es:", rtd, "ohmios")
+import numpy as np
+
+def pt100_resistencia_superior(temperatura):
+    
+    R0 = 100.0  # Resistencia nominal a 0°C para la PT100
+    A = 3.9083e-3
+    B = -5.775e-7
+    # Ecuación superior de la PT100: R(T) = R0 * (1 + A * T + B * T^2)
+    resistencia_superior = R0 * (1 + A * temperatura + B * temperatura**2)
+    return resistencia_superior
+
+def pt100_resistencia_inferior(temperatura):
+    R0 = 100.0  # Resistencia nominal a 0°C para la PT100
+    A = 3.9083e-3
+    B = -5.775e-7
+    C = -4.183e-12
+    # Ecuación inferior de la PT100: R(T) = R0 * (1 + A * T + B * T^2)
+    resistencia_inferior = R0 * (1 + A * temperatura + B * temperatura**2 + C * (temperatura- 100) * temperatura**3)
+    return resistencia_inferior
+temperatura =50
+
+print("El valor de la resistencia RTD de platino (PT100) a", pt100_resistencia_superior(temperatura),"ohmios")
 ```
 <h2>Punto 5</h2>
 Realice en funciones las rotaciones en X, Y y Z, donde se tenga un parámetro de entrada (ángulo) y un parámetro de salida (matriz).
@@ -362,22 +368,52 @@ Realice un programa que grafique el comportamiento de un sensor PT100 desde -200
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-# Definir el rango de temperatura de -200°C a 200°C
-temperaturas = np.linspace(-200, 200, 400)
-# Simular el comportamiento del sensor PT100 (esto es solo un ejemplo, no representa la realidad)
-# Puedes ajustar los valores de la resistencia en función de la temperatura según la tabla de calibración de un PT100 real
-resistencia_referencia = 100.0  # Resistencia a 0°C (valor de referencia)
-coeficiente_temperatura = 0.00385  # Coeficiente de temperatura del PT100
-# Calcular la resistencia en función de la temperatura
-resistencias = resistencia_referencia * (1 + coeficiente_temperatura * temperaturas)
-# Graficar el comportamiento del sensor PT100
-plt.figure(figsize=(10, 6))
-plt.plot(temperaturas, resistencias, label='Sensor PT100')
+
+# Ecuaciones para la resistencia de la PT100
+def pt100_superior(T):
+    """
+    Ecuación para la resistencia superior de la PT100 en función de la temperatura.
+    """
+    R0 = 100.0  # Resistencia nominal a 0°C
+    A = 3.9083e-3
+    B = -5.775e-7
+    return R0 * (1 + A * T + B * T**2)
+
+def pt100_inferior(T):
+    """
+    Ecuación para la resistencia inferior de la PT100 en función de la temperatura.
+    """
+    R0 = 100.0  # Resistencia nominal a 0°C
+    A = 3.9083e-3
+    B = -5.775e-7
+    return R0 * (1 + A * T + B * T**2)
+
+# Rango de temperaturas
+temperaturas = np.arange(-200, 201, 1)
+
+# Calcular resistencias para las temperaturas dadas
+resistencias_superior = pt100_superior(temperaturas)
+resistencias_inferior = pt100_inferior(temperaturas)
+
+# Crear una figura para la ecuación superior
+plt.figure(1, figsize=(10, 6))
+plt.plot(temperaturas, resistencias_superior, label='Ecuación Superior')
+plt.title('Comportamiento de la PT100 - Ecuación Superior')
 plt.xlabel('Temperatura (°C)')
 plt.ylabel('Resistencia (Ohmios)')
-plt.title('Comportamiento del Sensor PT100')
 plt.legend()
 plt.grid(True)
+
+# Crear otra figura para la ecuación inferior
+plt.figure(2, figsize=(10, 6))
+plt.plot(temperaturas, resistencias_inferior, label='Ecuación Inferior')
+plt.title('Comportamiento de la PT100 - Ecuación Inferior')
+plt.xlabel('Temperatura (°C)')
+plt.ylabel('Resistencia (Ohmios)')
+plt.legend()
+plt.grid(True)
+
+# Mostrar las dos ventanas de gráficos
 plt.show()
 ```
 
