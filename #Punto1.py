@@ -1,19 +1,26 @@
-import numpy as np
-import matplotlib.pyplot as plt
-# Definir el rango de temperatura de -200°C a 200°C
-temperaturas = np.linspace(-200, 200, 400)
-# Simular el comportamiento del sensor PT100 (esto es solo un ejemplo, no representa la realidad)
-# Puedes ajustar los valores de la resistencia en función de la temperatura según la tabla de calibración de un PT100 real
-resistencia_referencia = 100.0  # Resistencia a 0°C (valor de referencia)
-coeficiente_temperatura = 0.00385  # Coeficiente de temperatura del PT100
-# Calcular la resistencia en función de la temperatura
-resistencias = resistencia_referencia * (1 + coeficiente_temperatura * temperaturas)
-# Graficar el comportamiento del sensor PT100
-plt.figure(figsize=(10, 6))
-plt.plot(temperaturas, resistencias, label='Sensor PT100')
-plt.xlabel('Temperatura (°C)')
-plt.ylabel('Resistencia (Ohmios)')
-plt.title('Comportamiento del Sensor PT100')
-plt.legend()
-plt.grid(True)
-plt.show()
+import math
+
+def cartesian_to_cylindrical(x, y, z):
+    r = math.sqrt(x**2 + y**2)  # Radio en el plano xy
+    theta = math.atan2(y, x)    # Ángulo azimutal en el plano xy
+    z_cylindrical = z            # La coordenada z se mantiene igual en coordenadas cilíndricas
+    return r, theta, z_cylindrical
+
+def cartesian_to_spherical(x, y, z):
+    r = math.sqrt(x**2 + y**2 + z**2)  # Radio esférico
+    theta = math.atan2(y, x)            # Ángulo azimutal en el plano xy
+    phi = math.acos(z / r)              # Ángulo de elevación con respecto al eje z
+    return r, theta, phi
+
+# Usa las coordenadas rectangulares
+x = 4
+y = 5
+z = 6
+
+# Convertir a coordenadas cilíndricas
+r_cylindrical, theta_cylindrical, z_cylindrical = cartesian_to_cylindrical(x, y, z)
+print(f"\nCoordenadas Cilíndricas: r = {r_cylindrical}, θ = {theta_cylindrical}, z = {z_cylindrical}")
+
+# Convertir a coordenadas esféricas
+r_spherical, theta_spherical, phi_spherical = cartesian_to_spherical(x, y, z)
+print(f"Coordenadas Esféricas: r = {r_spherical}, θ = {theta_spherical} rad, φ = {phi_spherical} rad")

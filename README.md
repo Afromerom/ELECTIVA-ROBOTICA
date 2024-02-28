@@ -124,19 +124,32 @@ Realice un programa que convierta coordenadas rectangulares a cilíndricas y esf
 deben consultar sobre el uso de funciones trigonométricas en Python.
 
 ```python
-import cmath
-# Programa coordenadas polares a cartesianas
-r = 50
-theta = 80 * (cmath.pi / 180)
-# Coordenadas polares a cartesianas
-x, y = cmath.polar(cmath.rect(r, theta))
-coordinates_polar_to_cartesian = f'Programa coordenadas polares a cartesianas y viceversa\nDe polares a rectangulares en la función r=50 θ=80°\nEl vector corresponde a: A=[{x} + {y}j]'
-# Programa coordenadas cartesianas a polares
-A = 80 + 60j
-r1, theta2 = cmath.polar(A)
-coordinates_cartesian_to_polar = f'De rectangulares a polares en la función 80+60i\nEl vector corresponde a: [r = {r1} , θ = {cmath.phase(A)*180/cmath.pi}°]'
-print(coordinates_polar_to_cartesian)
-print(coordinates_cartesian_to_polar)
+import math
+
+def cartesian_to_cylindrical(x, y, z):
+    r = math.sqrt(x**2 + y**2)  # Radio en el plano xy
+    theta = math.atan2(y, x)    # Ángulo azimutal en el plano xy
+    z_cylindrical = z            # La coordenada z se mantiene igual en coordenadas cilíndricas
+    return r, theta, z_cylindrical
+
+def cartesian_to_spherical(x, y, z):
+    r = math.sqrt(x**2 + y**2 + z**2)  # Radio esférico
+    theta = math.atan2(y, x)            # Ángulo azimutal en el plano xy
+    phi = math.acos(z / r)              # Ángulo de elevación con respecto al eje z
+    return r, theta, phi
+
+# Usa las coordenadas rectangulares
+x = 4
+y = 5
+z = 6
+
+# Convertir a coordenadas cilíndricas
+r_cylindrical, theta_cylindrical, z_cylindrical = cartesian_to_cylindrical(x, y, z)
+print(f"\nCoordenadas Cilíndricas: r = {r_cylindrical}, θ = {theta_cylindrical}, z = {z_cylindrical}")
+
+# Convertir a coordenadas esféricas
+r_spherical, theta_spherical, phi_spherical = cartesian_to_spherical(x, y, z)
+print(f"Coordenadas Esféricas: r = {r_spherical}, θ = {theta_spherical} rad, φ = {phi_spherical} rad")
 ```
 
 <h2>Punto 4</h2>
