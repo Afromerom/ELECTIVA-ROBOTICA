@@ -1,26 +1,40 @@
-import math
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
 
-def cartesian_to_cylindrical(x, y, z):
-    r = math.sqrt(x**2 + y**2)  # Radio en el plano xy
-    theta = math.atan2(y, x)    # Ángulo azimutal en el plano xy
-    z_cylindrical = z            # La coordenada z se mantiene igual en coordenadas cilíndricas
-    return r, theta, z_cylindrical
+# Función para determinar el tipo de sistema
+def determinar_tipo_sistema(zeta):
+    if zeta < 1:
+        return "Subamortiguado"
+    elif zeta == 1:
+        return "Críticamente Amortiguado"
+    else:
+        return "Sobreamortiguado"
 
-def cartesian_to_spherical(x, y, z):
-    r = math.sqrt(x**2 + y**2 + z**2)  # Radio esférico
-    theta = math.atan2(y, x)            # Ángulo azimutal en el plano xy
-    phi = math.acos(z / r)              # Ángulo de elevación con respecto al eje z
-    return r, theta, phi
+# Solicitar al usuario ingresar los coeficientes
+omega_n = float(input("Ingrese la frecuencia natural (omega_n): "))
+zeta = float(input("Ingrese el coeficiente de amortiguamiento (zeta): "))
+ganancia = float(input("Ingrese la ganancia: "))
 
-# Usa las coordenadas rectangulares
-x = 4
-y = 5
-z = 6
+# Crear la función de transferencia de segundo orden
+num = [ganancia * omega_n**2]
+den = [1, 2 * zeta * omega_n, omega_n**2]
+system = signal.TransferFunction(num, den)
 
-# Convertir a coordenadas cilíndricas
-r_cylindrical, theta_cylindrical, z_cylindrical = cartesian_to_cylindrical(x, y, z)
-print(f"\nCoordenadas Cilíndricas: r = {r_cylindrical}, θ = {theta_cylindrical}, z = {z_cylindrical}")
+# Determinar el tipo de sistema
+tipo_sistema = determinar_tipo_sistema(zeta)
+print(f"El sistema es {tipo_sistema}")
 
-# Convertir a coordenadas esféricas
-r_spherical, theta_spherical, phi_spherical = cartesian_to_spherical(x, y, z)
-print(f"Coordenadas Esféricas: r = {r_spherical}, θ = {theta_spherical} rad, φ = {phi_spherical} rad")
+# Crear un rango de tiempo
+t = np.linspace(0, 10, 1000)
+
+# Calcular la respuesta del sistema al impulso
+t, y = signal.step(system, T=t)
+
+# Graficar la respuesta del sistema
+plt.plot(t, y)
+plt.title('Respuesta del Sistema de Segundo Orden')
+plt.xlabel('Tiempo')
+plt.ylabel('Respuesta')
+plt.grid(True)
+plt.show()
