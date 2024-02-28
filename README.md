@@ -371,22 +371,17 @@ import matplotlib.pyplot as plt
 
 # Ecuaciones para la resistencia de la PT100
 def pt100_superior(T):
-    """
-    Ecuación para la resistencia superior de la PT100 en función de la temperatura.
-    """
     R0 = 100.0  # Resistencia nominal a 0°C
     A = 3.9083e-3
     B = -5.775e-7
     return R0 * (1 + A * T + B * T**2)
 
 def pt100_inferior(T):
-    """
-    Ecuación para la resistencia inferior de la PT100 en función de la temperatura.
-    """
     R0 = 100.0  # Resistencia nominal a 0°C
     A = 3.9083e-3
     B = -5.775e-7
-    return R0 * (1 + A * T + B * T**2)
+    C = -4.183e-12
+    return R0 * (1 + A * T + B * T**2 + C * (T- 100) * T**3)
 
 # Rango de temperaturas
 temperaturas = np.arange(-200, 201, 1)
