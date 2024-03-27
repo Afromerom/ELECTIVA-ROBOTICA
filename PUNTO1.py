@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PUNTO1.2.ui'
+# Form implementation generated from reading ui file 'C:\Users\Pipe\Desktop\INTERFACES\PUNTO1.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from math import sin, cos, tan
 
 
 class Ui_Dialog(object):
@@ -146,6 +145,13 @@ class Ui_Dialog(object):
         font.setPointSize(9)
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
+        self.num1 = QtWidgets.QTextBrowser(Dialog)
+        self.num1.setGeometry(QtCore.QRect(90, 140, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.num1.setFont(font)
+        self.num1.setObjectName("num1")
         self.label_6 = QtWidgets.QLabel(Dialog)
         self.label_6.setGeometry(QtCore.QRect(220, 120, 51, 21))
         font = QtGui.QFont()
@@ -153,6 +159,13 @@ class Ui_Dialog(object):
         font.setPointSize(9)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
+        self.num1_2 = QtWidgets.QTextBrowser(Dialog)
+        self.num1_2.setGeometry(QtCore.QRect(200, 140, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.num1_2.setFont(font)
+        self.num1_2.setObjectName("num1_2")
         self.respuesta = QtWidgets.QLabel(Dialog)
         self.respuesta.setGeometry(QtCore.QRect(80, 270, 201, 21))
         font = QtGui.QFont()
@@ -177,41 +190,17 @@ class Ui_Dialog(object):
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
         self.label_8 = QtWidgets.QLabel(Dialog)
-        self.label_8.setGeometry(QtCore.QRect(220, 20, 131, 81))
+        self.label_8.setGeometry(QtCore.QRect(220, 20, 141, 71))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_8.setFont(font)
+        self.label_8.setStyleSheet("border-image: url(:/newPrefix/ecci.jpg);")
         self.label_8.setText("")
-        self.label_8.setPixmap(QtGui.QPixmap("TALLER2\IMAGENES\ecci.jpg"))
-        self.label_8.setScaledContents(True)
         self.label_8.setObjectName("label_8")
-        self.textEdit = QtWidgets.QTextEdit(Dialog)
-        self.textEdit.setGeometry(QtCore.QRect(80, 140, 104, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
-        self.textEdit.setFont(font)
-        self.textEdit.setObjectName("textEdit")
-        self.textEdit_2 = QtWidgets.QTextEdit(Dialog)
-        self.textEdit_2.setGeometry(QtCore.QRect(190, 140, 104, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
-        self.textEdit_2.setFont(font)
-        self.textEdit_2.setObjectName("textEdit_2")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        
-
-        #Acción al presionar el botón en la GUI
-        self.Suma.clicked.connect(self.Suma1)
-        self.multipli.clicked.connect(self.multiplica)
-        self.resta.clicked.connect(self.resta1)
-        self.div.clicked.connect(self.divide)
-        self.sin.clicked.connect(self.seno)
-        self.cos.clicked.connect(self.coseno)
-        self.tan.clicked.connect(self.tangente)
-        self.cot.clicked.connect(self.cotangente)
-        self.sec.clicked.connect(self.secante)
-        self.csec.clicked.connect(self.cosecante)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -233,73 +222,8 @@ class Ui_Dialog(object):
         self.label_5.setText(_translate("Dialog", "Número 1"))
         self.label_6.setText(_translate("Dialog", "Número 2"))
         self.label_7.setText(_translate("Dialog", "Ingeniería Mecatrónica"))
-        
- #Función que se ejecuta con la acción anterior
-    def Suma1(self):
-        a = self.textEdit.toPlainText()
-        b = self.textEdit_2.toPlainText()
-        c = int(a)+int(b)
-        self.respuesta.setText(str(c))
-        
-    def multiplica(self):
-        a = self.textEdit.toPlainText()
-        b = self.textEdit_2.toPlainText()
-        c = int(a)*int(b)
-        self.respuesta.setText(str(c))
-    def resta1(self):
-        a = self.textEdit.toPlainText()
-        b = self.textEdit_2.toPlainText()
-        c = int(a)-int(b)
-        self.respuesta.setText(str(c))
-    def divide(self):
-        a = self.textEdit.toPlainText()
-        b = self.textEdit_2.toPlainText()
-        c = int(a)/int(b)
-        self.respuesta.setText(str(c))
-   
-    def seno(self):
-        a = float(self.textEdit.toPlainText())
-        b = float(self.textEdit_2.toPlainText())
-        c = sin(a)
-        d = sin(b)
-        self.respuesta.setText(str(c)) 
-        self.respuesta_2.setText(str(d)) 
-    def coseno(self):
-        a = float(self.textEdit.toPlainText())
-        b = float(self.textEdit_2.toPlainText())
-        c = cos(a)
-        d = cos(b)
-        self.respuesta.setText(str(c)) 
-        self.respuesta_2.setText(str(d)) 
-    def tangente(self):
-        a = float(self.textEdit.toPlainText())
-        b = float(self.textEdit_2.toPlainText())
-        c = tan(a)
-        d = tan(b)
-        self.respuesta.setText(str(c)) 
-        self.respuesta_2.setText(str(d)) 
-    def cotangente(self):
-        a = float(self.textEdit.toPlainText())
-        b = float(self.textEdit_2.toPlainText())
-        c = 1/tan(a)
-        d = 1/tan(b)
-        self.respuesta.setText(str(c)) 
-        self.respuesta_2.setText(str(d)) 
-    def secante(self):
-        a = float(self.textEdit.toPlainText())
-        b = float(self.textEdit_2.toPlainText())
-        c = 1/cos(a)
-        d = 1/cos(b)
-        self.respuesta.setText(str(c)) 
-        self.respuesta_2.setText(str(d)) 
-        
-    def cosecante(self):
-        a = float(self.textEdit.toPlainText())
-        b = float(self.textEdit_2.toPlainText())
-        c = 1/sin(a)
-        d = 1/sin(b)
-        self.respuesta.setText(str(c)) 
-        self.respuesta_2.setText(str(d))
+import logo1_rc
+
 
 if __name__ == "__main__":
     import sys
