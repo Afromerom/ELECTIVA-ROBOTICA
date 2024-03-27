@@ -124,6 +124,7 @@ class Ui_Python3(object):
         elif function_index == 1:  # Robot Esférico
             self.texto1.setText("3 articulaciones")
             self.texto2.setText("   3 Rotacionales")
+            self.texto3.setText("   ")
             # Carga y muestra el diagrama cinemático del robot cartesiano
             pixmap = QtGui.QPixmap("TALLER2\IMAGENES\ROBOTESFERICO.jpg")
             self.scene.clear()
