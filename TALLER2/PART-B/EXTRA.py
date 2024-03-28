@@ -129,9 +129,12 @@ class Ui_Punto1(object):
         # Set pin 11 as an output, and define as servo1 as PWM pin
         GPIO.setup(11, GPIO.OUT)
         self.servomotor1 = GPIO.PWM(11, 50)  # pin 11 for servo1, pulse 50Hz
+        GPIO.setup(12,GPIO.OUT)
+        self.servomotor2 = GPIO.PWM(12,50) # pin 12 for servo2
 
         # Start PWM running, with value of 0 (pulse off)
         self.servomotor1.start(0)
+        self.servomotor2.start(0)
 
     def retranslateUi(self, Punto1):
         _translate = QtCore.QCoreApplication.translate
@@ -147,19 +150,25 @@ class Ui_Punto1(object):
         self.label_10.setText(_translate("Punto1", "Servo 2"))
 
     def controlar_servo1(self, value):
-        angle = value
+        angle = self.valor1
         self.servomotor1.ChangeDutyCycle(2 + (angle / 18))
         time.sleep(0.5)
         self.servomotor1.ChangeDutyCycle(0)
 
     def controlar_servo2(self, value):
-        pass  # Implementa el control del segundo servo aquí
+        angle = self.valor2
+        self.servomotor2.ChangeDutyCycle(2 + (angle / 18))
+        time.sleep(0.5)
+        self.servomotor2.ChangeDutyCycle(0)
 
     def verificar_texto(self):
         texto = self.textEdit.toPlainText()
         if texto == "1":
             self.servo1.setEnabled(True)
             self.servo2.setEnabled(False)
+        elif texto == "2":
+            self.servo1.setEnabled(False)
+            self.servo2.setEnabled(True)
         else:
             self.servo1.setEnabled(False)
             self.servo2.setEnabled(False)
