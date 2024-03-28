@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import RPi.GPIO as GPIO
+import time
 
 class Ui_Punto1(object):
     def setupUi(self, Punto1):
@@ -78,7 +79,7 @@ class Ui_Punto1(object):
         self.servo1.setObjectName("servo1")
         self.servo1.setMinimum(0)  # Establecer mínimo en 0
         self.servo1.setMaximum(180)  # Establecer máximo en 180
-        self.servo1.valueChanged.connect(self.actualizar_valor_servo1)
+        self.servo1.valueChanged.connect(self.controlar_servo1)
         self.servo1.setEnabled(False)  # Deshabilitado inicialmente
         self.servo2 = QtWidgets.QSlider(Punto1)
         self.servo2.setGeometry(QtCore.QRect(120, 210, 201, 22))
@@ -86,7 +87,7 @@ class Ui_Punto1(object):
         self.servo2.setObjectName("servo2")
         self.servo2.setMinimum(0)  # Establecer mínimo en 0
         self.servo2.setMaximum(180)  # Establecer máximo en 180
-        self.servo2.valueChanged.connect(self.actualizar_valor_servo2)
+        self.servo2.valueChanged.connect(self.controlar_servo2)
         self.servo2.setEnabled(False)  # Deshabilitado inicialmente
         self.valor1 = QtWidgets.QLabel(Punto1)
         self.valor1.setGeometry(QtCore.QRect(330, 180, 51, 21))
@@ -121,6 +122,16 @@ class Ui_Punto1(object):
 
         self.retranslateUi(Punto1)
         QtCore.QMetaObject.connectSlotsByName(Punto1)
+        
+        # Set GPIO numbering mode
+        GPIO.setmode(GPIO.BOARD)
+
+        # Set pin 11 as an output, and define as servo1 as PWM pin
+        GPIO.setup(11, GPIO.OUT)
+        self.servomotor1 = GPIO.PWM(11, 50)  # pin 11 for servo1, pulse 50Hz
+
+        # Start PWM running, with value of 0 (pulse off)
+        self.servomotor1.start(0)
 
     def retranslateUi(self, Punto1):
         _translate = QtCore.QCoreApplication.translate
@@ -135,20 +146,20 @@ class Ui_Punto1(object):
         self.label_9.setText(_translate("Punto1", "Servo 1"))
         self.label_10.setText(_translate("Punto1", "Servo 2"))
 
-    def actualizar_valor_servo1(self, value):
-        self.valor1.setText(str(value))
+    def controlar_servo1(self, value):
+        angle = value
+        self.servomotor1.ChangeDutyCycle(2 + (angle / 18))
+        time.sleep(0.5)
+        self.servomotor1.ChangeDutyCycle(0)
 
-    def actualizar_valor_servo2(self, value):
-        self.valor2.setText(str(value))
+    def controlar_servo2(self, value):
+        pass  # Implementa el control del segundo servo aquí
 
     def verificar_texto(self):
         texto = self.textEdit.toPlainText()
         if texto == "1":
             self.servo1.setEnabled(True)
             self.servo2.setEnabled(False)
-        elif texto == "2":
-            self.servo1.setEnabled(False)
-            self.servo2.setEnabled(True)    
         else:
             self.servo1.setEnabled(False)
             self.servo2.setEnabled(False)
