@@ -154,6 +154,7 @@ class Ui_Punto1(object):
             self.servo2.setEnabled(False)
 
 
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
