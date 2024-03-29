@@ -1648,7 +1648,7 @@ if __name__ == "__main__":
 
 <h2>Motores paso a paso</h2>
 <h2>Punto 5</h2>
-Realizar el giro de un motor paso a paso una cantidad de vueltas (ej: 0.5, 1, 2.5, etc.) determinada por el usuario a través de un objeto tipo Edit Text y un objeto Push button para accionar el movimiento del actuador.
+Realizar el giro de un motor paso a paso una cantidad de vueltas (ej: 0.5, 1, 2.5, etc.) determinada por el usuario a través de un objeto tipo Edit Text y un objeto Push button para accionar el movimiento del actuador. :)
 
 ```python
 from PyQt5 import QtCore, QtGui, QtWidgets
