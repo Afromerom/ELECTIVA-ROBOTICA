@@ -926,7 +926,199 @@ if __name__ == "__main__":
 Utilizar un objeto tipo slider para mover dos servomotores de 0 a 180°. La selección del servomotor se debe realizar utilizando un objeto tipo Edit Text. En un objeto tipo Static Text debemos visualizar el ángulo actual en grados del servomotor a medida que vamos moviendo el objeto tipo slider.
 
 ```python
+from PyQt5 import QtCore, QtGui, QtWidgets
+import RPi.GPIO as GPIO
+import time
 
+class Ui_Punto1(object):
+    def setupUi(self, Punto1):
+        Punto1.setObjectName("Punto1")
+        Punto1.resize(400, 249)
+        self.label_8 = QtWidgets.QLabel(Punto1)
+        self.label_8.setGeometry(QtCore.QRect(240, 10, 151, 81))
+        self.label_8.setText("")
+        self.label_8.setPixmap(QtGui.QPixmap("TALLER2/IMAGENES/ecci.jpg"))
+        self.label_8.setScaledContents(True)
+        self.label_8.setObjectName("label_8")
+        self.label = QtWidgets.QLabel(Punto1)
+        self.label.setGeometry(QtCore.QRect(10, 10, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_7 = QtWidgets.QLabel(Punto1)
+        self.label_7.setGeometry(QtCore.QRect(10, 30, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.label_4 = QtWidgets.QLabel(Punto1)
+        self.label_4.setGeometry(QtCore.QRect(10, 90, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.label_2 = QtWidgets.QLabel(Punto1)
+        self.label_2.setGeometry(QtCore.QRect(10, 50, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.label_3 = QtWidgets.QLabel(Punto1)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.textEdit = QtWidgets.QTextEdit(Punto1)
+        self.textEdit.setGeometry(QtCore.QRect(220, 120, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(14)
+        self.textEdit.setFont(font)
+        self.textEdit.setObjectName("textEdit")
+        self.label_5 = QtWidgets.QLabel(Punto1)
+        self.label_5.setGeometry(QtCore.QRect(10, 120, 211, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        self.label_6 = QtWidgets.QLabel(Punto1)
+        self.label_6.setGeometry(QtCore.QRect(10, 140, 211, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.servo1 = QtWidgets.QSlider(Punto1)
+        self.servo1.setGeometry(QtCore.QRect(120, 180, 201, 22))
+        self.servo1.setOrientation(QtCore.Qt.Horizontal)
+        self.servo1.setObjectName("servo1")
+        self.servo1.setMinimum(0)  # Establecer mínimo en 0
+        self.servo1.setMaximum(180)  # Establecer máximo en 180
+        self.servo1.valueChanged.connect(self.actualizar_valor_servo1)
+        self.servo1.valueChanged.connect(self.controlar_servo1)
+        self.servo1.setEnabled(False)  # Deshabilitado inicialmente
+        self.servo2 = QtWidgets.QSlider(Punto1)
+        self.servo2.setGeometry(QtCore.QRect(120, 210, 201, 22))
+        self.servo2.setOrientation(QtCore.Qt.Horizontal)
+        self.servo2.setObjectName("servo2")
+        self.servo2.setMinimum(0)  # Establecer mínimo en 0
+        self.servo2.setMaximum(180)  # Establecer máximo en 180
+        self.servo2.valueChanged.connect(self.actualizar_valor_servo2)
+        self.servo2.valueChanged.connect(self.controlar_servo2)
+        self.servo2.setEnabled(False)  # Deshabilitado inicialmente
+        self.valor1 = QtWidgets.QLabel(Punto1)
+        self.valor1.setGeometry(QtCore.QRect(330, 180, 51, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.valor1.setFont(font)
+        self.valor1.setText("")
+        self.valor1.setObjectName("valor1")
+        self.valor2 = QtWidgets.QLabel(Punto1)
+        self.valor2.setGeometry(QtCore.QRect(330, 210, 51, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.valor2.setFont(font)
+        self.valor2.setText("")
+        self.valor2.setObjectName("valor2")
+        self.label_9 = QtWidgets.QLabel(Punto1)
+        self.label_9.setGeometry(QtCore.QRect(30, 180, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.label_10 = QtWidgets.QLabel(Punto1)
+        self.label_10.setGeometry(QtCore.QRect(30, 210, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+
+        self.retranslateUi(Punto1)
+        QtCore.QMetaObject.connectSlotsByName(Punto1)
+        
+        # Set GPIO numbering mode
+        GPIO.setmode(GPIO.BOARD)
+
+        # Set pin 11 as an output, and define as servo1 as PWM pin
+        GPIO.setup(11, GPIO.OUT)
+        self.servomotor1 = GPIO.PWM(11, 50)  # pin 11 for servo1, pulse 50Hz
+        GPIO.setup(12,GPIO.OUT)
+        self.servomotor2 = GPIO.PWM(12,50) # pin 12 for servo2
+
+        # Start PWM running, with value of 0 (pulse off)
+        self.servomotor1.start(0)
+        self.servomotor2.start(0)
+
+    def retranslateUi(self, Punto1):
+        _translate = QtCore.QCoreApplication.translate
+        Punto1.setWindowTitle(_translate("Punto1", "PUNTO1"))
+        self.label.setText(_translate("Punto1", "Algoritmos de Robótica "))
+        self.label_7.setText(_translate("Punto1", "Ingeniería Mecatrónica"))
+        self.label_4.setText(_translate("Punto1", "2024 - 1"))
+        self.label_2.setText(_translate("Punto1", "Nicolas Mejia Muñoz"))
+        self.label_3.setText(_translate("Punto1", "Andrés Felipe Romero Medina"))
+        self.label_5.setText(_translate("Punto1", "Ingrese el número del servomotor "))
+        self.label_6.setText(_translate("Punto1", "que desea manipular: "))
+        self.label_9.setText(_translate("Punto1", "Servo 1"))
+        self.label_10.setText(_translate("Punto1", "Servo 2"))  
+        
+    def controlar_servo1(self, value):
+        angle = value
+        self.servomotor1.ChangeDutyCycle(2 + (angle / 18))
+        time.sleep(0.005)
+        self.servomotor1.ChangeDutyCycle(0)
+
+    def controlar_servo2(self, value):
+        angle = value
+        self.servomotor2.ChangeDutyCycle(2 + (angle / 18))
+        time.sleep(0.005)
+        self.servomotor2.ChangeDutyCycle(0)
+    
+    def actualizar_valor_servo1(self, value):
+        self.valor1.setText(str(value))
+
+    def actualizar_valor_servo2(self, value):
+        self.valor2.setText(str(value)) 
+
+    def verificar_texto(self):
+        texto = self.textEdit.toPlainText()
+        if texto == "1":
+            self.servo1.setEnabled(True)
+            self.servo2.setEnabled(False)
+        elif texto == "2":
+            self.servo1.setEnabled(False)
+            self.servo2.setEnabled(True)
+        else:
+            self.servo1.setEnabled(False)
+            self.servo2.setEnabled(False)
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Punto1 = QtWidgets.QDialog()
+    ui = Ui_Punto1()
+    ui.setupUi(Punto1)
+    ui.textEdit.textChanged.connect(ui.verificar_texto)
+    Punto1.show()
+    sys.exit(app.exec_())
 ```
 
 <h2>Escritura de puertos</h2>
@@ -934,6 +1126,166 @@ Utilizar un objeto tipo slider para mover dos servomotores de 0 a 180°. La sele
 Utilizar dos Push button para encender y apagar dos diodos LED, un Push button para cada led y por cada pulsación se debe realizar una acción (encender o apagar), en la interfaz gráfica el color de los Push Button debe ser el mismo que el LED encendido. Además, utilizar dos slider para aumentar o disminuir el brillo de otros dos diodos LED diferentes a los anteriores.
 
 ```python
+import RPi.GPIO as GPIO
+import time
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(400, 227)
+        self.label_4 = QtWidgets.QLabel(Dialog)
+        self.label_4.setGeometry(QtCore.QRect(10, 90, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.label_7 = QtWidgets.QLabel(Dialog)
+        self.label_7.setGeometry(QtCore.QRect(10, 30, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.label_8 = QtWidgets.QLabel(Dialog)
+        self.label_8.setGeometry(QtCore.QRect(240, 10, 151, 81))
+        self.label_8.setText("")
+        self.label_8.setPixmap(QtGui.QPixmap("TALLER2/IMAGENES/ecci.jpg"))
+        self.label_8.setScaledContents(True)
+        self.label_8.setObjectName("label_8")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(10, 10, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_3 = QtWidgets.QLabel(Dialog)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setGeometry(QtCore.QRect(10, 50, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.ButtonLed1 = QtWidgets.QPushButton(Dialog)
+        self.ButtonLed1.setGeometry(QtCore.QRect(20, 120, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.ButtonLed1.setFont(font)
+        self.ButtonLed1.setObjectName("ButtonLed1")
+        self.ButtonLed2 = QtWidgets.QPushButton(Dialog)
+        self.ButtonLed2.setGeometry(QtCore.QRect(210, 120, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.ButtonLed2.setFont(font)
+        self.ButtonLed2.setObjectName("ButtonLed2")
+        self.SliderLED1 = QtWidgets.QSlider(Dialog)
+        self.SliderLED1.setGeometry(QtCore.QRect(20, 180, 161, 22))
+        self.SliderLED1.setOrientation(QtCore.Qt.Horizontal)
+        self.SliderLED1.setObjectName("SliderLED1")
+        self.SliderLED2 = QtWidgets.QSlider(Dialog)
+        self.SliderLED2.setGeometry(QtCore.QRect(210, 180, 161, 22))
+        self.SliderLED2.setOrientation(QtCore.Qt.Horizontal)
+        self.SliderLED2.setObjectName("SliderLED2")
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+        # ConfiguraciÃ³n del pin GPIO
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(6, GPIO.OUT)  # LED on pin 6
+        GPIO.setup(5, GPIO.OUT)  # LED on pin 5
+        self.pwm_led = GPIO.PWM(6, 100)  # PWM on pin 6 at 100Hz
+        self.pwm_led.start(0)  # Start PWM with duty cycle 0
+        
+        self.pwm_led2 = GPIO.PWM(5, 100)  # PWM on pin 6 at 100Hz
+        self.pwm_led2.start(0)  # Start PWM with duty cycle 0
+        
+        # Estado inicial del LED
+        self.led_intensity = 0
+        self.led_intensity2 = 0
+
+        # Conecta las seÃ±ales de los botones y deslizadores a las funciones correspondientes
+        self.ButtonLed1.clicked.connect(self.changeColorBlue)
+        self.ButtonLed1.clicked.connect(self.toggle_led)
+        self.SliderLED1.valueChanged.connect(self.change_intensity)
+        
+        # Conecta las seÃ±ales de los botones y deslizadores a las funciones correspondientes
+        self.ButtonLed2.clicked.connect(self.toggle_led2)
+        self.ButtonLed2.clicked.connect(self.changeColorGreen)
+        self.SliderLED2.valueChanged.connect(self.change_intensity2)
+        
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Punto 2"))
+        self.label_4.setText(_translate("Dialog", "2024 - 1"))
+        self.label_7.setText(_translate("Dialog", "IngenierÃ­a MecatrÃ³nica"))
+        self.label.setText(_translate("Dialog", "Algoritmos de RobÃ³tica "))
+        self.label_3.setText(_translate("Dialog", "AndrÃ©s Felipe Romero Medina"))
+        self.label_2.setText(_translate("Dialog", "Nicolas Mejia MuÃ±oz"))
+        self.ButtonLed1.setText(_translate("Dialog", "LED 1"))
+        self.ButtonLed2.setText(_translate("Dialog", "LED 2"))
+
+
+
+    def changeColorBlue(self):
+        self.ButtonLed1.setStyleSheet("background-color: blue")
+
+    def changeColorGreen(self):
+        self.ButtonLed2.setStyleSheet("background-color: orange")
+        
+
+    def toggle_led(self):
+        if self.led_intensity == 0:
+            self.led_intensity = 100
+            self.pwm_led.ChangeDutyCycle(self.led_intensity)
+        else:
+            self.led_intensity = 0
+            self.pwm_led.ChangeDutyCycle(self.led_intensity)
+            
+    def toggle_led2(self):
+        if self.led_intensity2 == 0:
+            self.led_intensity2 = 100
+            self.pwm_led2.ChangeDutyCycle(self.led_intensity2)
+        else:
+            self.led_intensity2 = 0
+            self.pwm_led2.ChangeDutyCycle(self.led_intensity2)
+
+    def change_intensity(self, value):
+        self.led_intensity = value
+        self.pwm_led.ChangeDutyCycle(self.led_intensity)
+    
+    def change_intensity2(self, value):
+        self.led_intensity2 = value
+        self.pwm_led2.ChangeDutyCycle(self.led_intensity2)
+
+    def change_color_default(self):
+        self.ButtonLed1.setStyleSheet("")
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
 
 ```
 
@@ -942,7 +1294,211 @@ Utilizar dos Push button para encender y apagar dos diodos LED, un Push button p
 Realizar la lectura de cualquier sensor por I2C en un Static Text y mostrar dicha lectura durante un tiempo definido por el usuario a través de un objeto tipo Edit Text al presionar un objeto tipo Push button.
 
 ```python
+from PyQt5 import QtCore, QtGui, QtWidgets
+import RPi.GPIO as GPIO
+import time
+import threading
 
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(400, 264)
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(10, 10, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_8 = QtWidgets.QLabel(Dialog)
+        self.label_8.setGeometry(QtCore.QRect(240, 10, 151, 81))
+        self.label_8.setPixmap(QtGui.QPixmap("TALLER2/IMAGENES/ecci.jpg"))
+        self.label_8.setScaledContents(True)
+        self.label_8.setObjectName("label_8")
+        self.label_3 = QtWidgets.QLabel(Dialog)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.label_7 = QtWidgets.QLabel(Dialog)
+        self.label_7.setGeometry(QtCore.QRect(10, 30, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setGeometry(QtCore.QRect(10, 50, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.label_4 = QtWidgets.QLabel(Dialog)
+        self.label_4.setGeometry(QtCore.QRect(10, 90, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setGeometry(QtCore.QRect(10, 110, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        self.label_6 = QtWidgets.QLabel(Dialog)
+        self.label_6.setGeometry(QtCore.QRect(10, 130, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.Tiemposec = QtWidgets.QTextEdit(Dialog)
+        self.Tiemposec.setGeometry(QtCore.QRect(210, 110, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(14)
+        self.Tiemposec.setFont(font)
+        self.Tiemposec.setObjectName("Tiemposec")
+        self.Inicio = QtWidgets.QPushButton(Dialog)
+        self.Inicio.setGeometry(QtCore.QRect(210, 160, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.Inicio.setFont(font)
+        self.Inicio.setObjectName("Inicio")
+        self.label_9 = QtWidgets.QLabel(Dialog)
+        self.label_9.setGeometry(QtCore.QRect(160, 170, 41, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.Tiempot = QtWidgets.QLabel(Dialog)
+        self.Tiempot.setGeometry(QtCore.QRect(30, 170, 111, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(16)
+        self.Tiempot.setFont(font)
+        self.Tiempot.setText("")
+        self.Tiempot.setObjectName("Tiempot")
+        self.label_10 = QtWidgets.QLabel(Dialog)
+        self.label_10.setGeometry(QtCore.QRect(250, 220, 41, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        self.Tiempot_2 = QtWidgets.QLabel(Dialog)
+        self.Tiempot_2.setGeometry(QtCore.QRect(120, 220, 111, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(16)
+        self.Tiempot_2.setFont(font)
+        self.Tiempot_2.setText("")
+        self.Tiempot_2.setObjectName("Tiempot_2")
+        self.label_11 = QtWidgets.QLabel(Dialog)
+        self.label_11.setGeometry(QtCore.QRect(40, 220, 71, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_11.setFont(font)
+        self.label_11.setObjectName("label_11")
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+        self.Inicio.clicked.connect(self.start_countdown)  # Conecta el clic del botón a la función de cuenta regresiva
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Punto 3"))
+        self.label.setText(_translate("Dialog", "Algoritmos de Robótica "))
+        self.label_3.setText(_translate("Dialog", "Andrés Felipe Romero Medina"))
+        self.label_7.setText(_translate("Dialog", "Ingeniería Mecatrónica"))
+        self.label_2.setText(_translate("Dialog", "Nicolas Mejia Muñoz"))
+        self.label_4.setText(_translate("Dialog", "2024 - 1"))
+        self.label_5.setText(_translate("Dialog", "Ingrese por cuantos segundos "))
+        self.label_6.setText(_translate("Dialog", "desea la toma de la lectura "))
+        self.Inicio.setText(_translate("Dialog", "START"))
+        self.label_9.setText(_translate("Dialog", "s"))
+        self.label_10.setText(_translate("Dialog", "cm"))
+        self.label_11.setText(_translate("Dialog", "Lectura: "))
+
+    def start_countdown(self):
+        seconds = int(self.Tiemposec.toPlainText())  # Obtiene los segundos ingresados
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.update_time)
+        self.timer.start(1000)  # Inicia el temporizador con una frecuencia de actualización de 1 segundo
+        self.remaining_seconds = seconds
+        self.start_sensor_reading()
+
+    def update_time(self):
+        self.remaining_seconds -= 1
+        if self.remaining_seconds >= 0:
+            self.Tiempot.setText(str(self.remaining_seconds))
+        else:
+            self.timer.stop()
+            self.Tiempot.setText("Fin")
+
+    def start_sensor_reading(self):
+        self.sensor_thread = threading.Thread(target=self.continuously_read_sensor)
+        self.sensor_thread.daemon = True
+        self.sensor_thread.start()
+
+    def continuously_read_sensor(self):
+        try:
+            while self.remaining_seconds > 0:
+                dist = self.read_sensor()
+                self.Tiempot_2.setText(str(dist))
+                time.sleep(1)  # Leer cada segundo mientras el temporizador esté en marcha
+        except Exception as e:
+            print("Error reading sensor:", e)
+
+    def read_sensor(self):
+        TRIG = 3
+        ECHO = 2
+       
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(TRIG, GPIO.OUT)
+        GPIO.setup(ECHO, GPIO.IN)
+
+        GPIO.output(TRIG, True)
+        time.sleep(0.00001)
+        GPIO.output(TRIG, False)
+
+        pulse_start = time.time()
+        pulse_end = time.time()
+
+        while GPIO.input(ECHO)==0:
+            pulse_start = time.time()
+
+        while GPIO.input(ECHO)==1:
+            pulse_end = time.time()
+
+        pulse_duration = pulse_end - pulse_start
+        distance = pulse_duration * 34000
+        distance = round(distance, 2)
+
+        return distance
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
 ```
 
 <h2>Lectura de puertos digitales</h2>
@@ -952,7 +1508,142 @@ Realizar la lectura de un pin digital de la Raspberry, donde el color y el texto
 4.2. Estado bajo -> color azul y texto “bajo”
 
 ```python
+import RPi.GPIO as GPIO
+import time
+from PyQt5 import QtCore, QtGui, QtWidgets
 
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(400, 155)
+        self.label_3 = QtWidgets.QLabel(Dialog)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(10, 10, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_7 = QtWidgets.QLabel(Dialog)
+        self.label_7.setGeometry(QtCore.QRect(10, 30, 191, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setGeometry(QtCore.QRect(10, 50, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.label_8 = QtWidgets.QLabel(Dialog)
+        self.label_8.setGeometry(QtCore.QRect(240, 10, 151, 81))
+        self.label_8.setText("")
+        self.label_8.setPixmap(QtGui.QPixmap("TALLER2/IMAGENES/ecci.jpg"))
+        self.label_8.setScaledContents(True)
+        self.label_8.setObjectName("label_8")
+        self.label_4 = QtWidgets.QLabel(Dialog)
+        self.label_4.setGeometry(QtCore.QRect(10, 90, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setGeometry(QtCore.QRect(50, 120, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        self.estado = QtWidgets.QLabel(Dialog)
+        self.estado.setGeometry(QtCore.QRect(260, 110, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(24)
+        font.setBold(True)
+        font.setWeight(75)
+        self.estado.setFont(font)
+        self.estado.setObjectName("estado")
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+        # Configurar el modo de los pines
+        GPIO.setmode(GPIO.BCM)
+
+        # Definir el pin de entrada
+        self.pin_entrada = 19
+
+        # Configurar el pin de entrada como una entrada
+        GPIO.setup(self.pin_entrada, GPIO.IN)
+
+        # Iniciar el hilo para leer el estado del GPIO
+        self.read_gpio_thread = QtCore.QThread()
+        self.worker = GpioReader(self.pin_entrada)
+        self.worker.moveToThread(self.read_gpio_thread)
+        self.read_gpio_thread.started.connect(self.worker.read_gpio)
+        self.worker.state_changed.connect(self.update_estado_label)
+        self.read_gpio_thread.start()
+
+    def update_estado_label(self, estado):
+        if estado == GPIO.HIGH:
+            self.estado.setText("<font color='red'>ALTO</font>")
+        else:
+            self.estado.setText("<font color='blue'>BAJO</font>")
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Punto 4"))
+        self.label_3.setText(_translate("Dialog", "Andrés Felipe Romero Medina"))
+        self.label.setText(_translate("Dialog", "Algoritmos de Robótica "))
+        self.label_7.setText(_translate("Dialog", "Ingeniería Mecatrónica"))
+        self.label_2.setText(_translate("Dialog", "Nicolas Mejia Muñoz"))
+        self.label_4.setText(_translate("Dialog", "2024 - 1"))
+        self.label_5.setText(_translate("Dialog", "Estado de la entrada"))
+
+class GpioReader(QtCore.QObject):
+    state_changed = QtCore.pyqtSignal(int)
+
+    def __init__(self, pin):
+        super().__init__()
+        self.pin = pin
+
+    @QtCore.pyqtSlot()
+    def read_gpio(self):
+        try:
+            while True:
+                # Leer el estado del pin de entrada
+                estado = GPIO.input(self.pin)
+                self.state_changed.emit(estado)
+                # Esperar un tiempo antes de volver a leer el estado
+                time.sleep(0.1)
+
+        except KeyboardInterrupt:
+            # Limpiar los pines GPIO
+            GPIO.cleanup()
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
 ```
 
 <h2>Motores paso a paso</h2>
@@ -960,5 +1651,163 @@ Realizar la lectura de un pin digital de la Raspberry, donde el color y el texto
 Realizar el giro de un motor paso a paso una cantidad de vueltas (ej: 0.5, 1, 2.5, etc.) determinada por el usuario a través de un objeto tipo Edit Text y un objeto Push button para accionar el movimiento del actuador.
 
 ```python
+from PyQt5 import QtCore, QtGui, QtWidgets
+import RPi.GPIO as GPIO
+import time
 
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(400, 222)
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setGeometry(QtCore.QRect(10, 10, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_8 = QtWidgets.QLabel(Dialog)
+        self.label_8.setGeometry(QtCore.QRect(240, 10, 151, 81))
+        self.label_8.setText("")
+        self.label_8.setPixmap(QtGui.QPixmap("TALLER2/IMAGENES/ecci.jpg"))
+        self.label_8.setScaledContents(True)
+        self.label_8.setObjectName("label_8")
+        self.label_7 = QtWidgets.QLabel(Dialog)
+        self.label_7.setGeometry(QtCore.QRect(10, 30, 191, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.label_4 = QtWidgets.QLabel(Dialog)
+        self.label_4.setGeometry(QtCore.QRect(10, 90, 61, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.label_3 = QtWidgets.QLabel(Dialog)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setGeometry(QtCore.QRect(10, 50, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.Inicio = QtWidgets.QPushButton(Dialog)
+        self.Inicio.setGeometry(QtCore.QRect(10, 170, 361, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.Inicio.setFont(font)
+        self.Inicio.setObjectName("Inicio")
+        self.Tiemposec = QtWidgets.QTextEdit(Dialog)
+        self.Tiemposec.setGeometry(QtCore.QRect(210, 120, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(14)
+        self.Tiemposec.setFont(font)
+        self.Tiemposec.setObjectName("Tiemposec")
+        self.label_6 = QtWidgets.QLabel(Dialog)
+        self.label_6.setGeometry(QtCore.QRect(10, 140, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setGeometry(QtCore.QRect(10, 120, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Punto 5"))
+        self.label.setText(_translate("Dialog", "Algoritmos de Robótica "))
+        self.label_7.setText(_translate("Dialog", "Ingeniería Mecatrónica"))
+        self.label_4.setText(_translate("Dialog", "2024 - 1"))
+        self.label_3.setText(_translate("Dialog", "Andrés Felipe Romero Medina"))
+        self.label_2.setText(_translate("Dialog", "Nicolas Mejia Muñoz"))
+        self.Inicio.setText(_translate("Dialog", "START"))
+        self.label_6.setText(_translate("Dialog", "genere el motor paso a paso"))
+        self.label_5.setText(_translate("Dialog", "Cuantas vueltas desea que "))
+
+
+def setup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(IN1, GPIO.OUT)
+    GPIO.setup(IN2, GPIO.OUT)
+    GPIO.setup(IN3, GPIO.OUT)
+    GPIO.setup(IN4, GPIO.OUT)
+
+def setStep(w1, w2, w3, w4):
+    GPIO.output(IN1, w1)
+    GPIO.output(IN2, w2)
+    GPIO.output(IN3, w3)
+    GPIO.output(IN4, w4)
+
+def forward(delay, steps):
+    for i in range(steps):
+        for step in sequence:
+            setStep(step[0], step[1], step[2], step[3])
+            time.sleep(delay)
+
+def main():
+    delay = 0.001
+    steps_per_half_revolution = 8 * 32
+    total_steps = float(ui.Tiemposec.toPlainText()) * steps_per_half_revolution * 2
+    forward(delay, int(total_steps))
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+
+    IN1 = 21
+    IN2 = 20
+    IN3 = 16
+    IN4 = 12
+
+    sequence = [
+        [1,0,0,1],
+        [1,0,0,0],
+        [1,1,0,0],
+        [0,1,0,0],
+        [0,1,1,0],
+        [0,0,1,0],
+        [0,0,1,1],
+        [0,0,0,1]
+    ]
+
+    GPIO.setwarnings(False)
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(IN1, GPIO.OUT)
+    GPIO.setup(IN2, GPIO.OUT)
+    GPIO.setup(IN3, GPIO.OUT)
+    GPIO.setup(IN4, GPIO.OUT)
+
+    ui.Inicio.clicked.connect(main)
+
+    sys.exit(app.exec_())
 ```
