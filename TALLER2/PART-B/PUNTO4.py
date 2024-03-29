@@ -1,5 +1,3 @@
-
-
 import RPi.GPIO as GPIO
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -41,7 +39,7 @@ class Ui_Dialog(object):
         self.label_8 = QtWidgets.QLabel(Dialog)
         self.label_8.setGeometry(QtCore.QRect(240, 10, 151, 81))
         self.label_8.setText("")
-        self.label_8.setPixmap(QtGui.QPixmap("TALLER2\IMAGENES\ecci.jpg"))
+        self.label_8.setPixmap(QtGui.QPixmap("TALLER2/IMAGENES/ecci.jpg"))
         self.label_8.setScaledContents(True)
         self.label_8.setObjectName("label_8")
         self.label_4 = QtWidgets.QLabel(Dialog)
@@ -99,7 +97,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Punto 4"))
         self.label_3.setText(_translate("Dialog", "Andrés Felipe Romero Medina"))
         self.label.setText(_translate("Dialog", "Algoritmos de Robótica "))
         self.label_7.setText(_translate("Dialog", "Ingeniería Mecatrónica"))
