@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(888, 692)
+        Dialog.resize(930, 692)
         self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setGeometry(QtCore.QRect(10, 70, 201, 21))
         font = QtGui.QFont()
@@ -58,14 +58,17 @@ class Ui_Dialog(object):
         self.horizontalSlider1.setGeometry(QtCore.QRect(140, 590, 731, 22))
         self.horizontalSlider1.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider1.setObjectName("horizontalSlider1")
+        self.horizontalSlider1.valueChanged.connect(self.actualizar_valor_resistencia)
         self.horizontalSlider_2 = QtWidgets.QSlider(Dialog)
         self.horizontalSlider_2.setGeometry(QtCore.QRect(140, 620, 731, 22))
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_2.setObjectName("horizontalSlider_2")
+        self.horizontalSlider_2.valueChanged.connect(self.actualizar_valor_capacitancia)
         self.horizontalSlider_3 = QtWidgets.QSlider(Dialog)
         self.horizontalSlider_3.setGeometry(QtCore.QRect(140, 650, 731, 22))
         self.horizontalSlider_3.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_3.setObjectName("horizontalSlider_3")
+        self.horizontalSlider_3.valueChanged.connect(self.actualizar_valor_voltaje)
         self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setGeometry(QtCore.QRect(30, 590, 101, 16))
         font = QtGui.QFont()
@@ -90,6 +93,18 @@ class Ui_Dialog(object):
         self.widget = QtWidgets.QWidget(Dialog)
         self.widget.setGeometry(QtCore.QRect(10, 120, 861, 451))
         self.widget.setObjectName("widget")
+        self.resistenciavalor = QtWidgets.QLabel(Dialog)
+        self.resistenciavalor.setGeometry(QtCore.QRect(880, 590, 47, 13))
+        self.resistenciavalor.setText("")
+        self.resistenciavalor.setObjectName("resistenciavalor")
+        self.capacitorvalor = QtWidgets.QLabel(Dialog)
+        self.capacitorvalor.setGeometry(QtCore.QRect(870, 620, 61, 20))
+        self.capacitorvalor.setText("")
+        self.capacitorvalor.setObjectName("capacitorvalor")
+        self.voltajevalor = QtWidgets.QLabel(Dialog)
+        self.voltajevalor.setGeometry(QtCore.QRect(880, 650, 61, 20))
+        self.voltajevalor.setText("")
+        self.voltajevalor.setObjectName("voltajevalor")
         
         #Mostrarlo
         self.widgetLayout = QtWidgets.QVBoxLayout(self.widget)
@@ -101,9 +116,20 @@ class Ui_Dialog(object):
         self.horizontalSlider_2.valueChanged.connect(self.update_plot)
         self.horizontalSlider_3.valueChanged.connect(self.update_plot)   
 
+
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        
+
+    def actualizar_valor_resistencia(self, value):
+        self.resistenciavalor.setText(str(value))
+    
+    def actualizar_valor_capacitancia(self, value):
+        self.capacitorvalor.setText(str(value))
+    
+    def actualizar_valor_voltaje(self, value):
+        self.voltajevalor.setText(str(value))
+    
+    
     def update_plot(self):
         resistencia = (self.horizontalSlider1.value())*1e3
         capacitancia = (self.horizontalSlider_2.value()) * 1e-6    
@@ -123,6 +149,7 @@ class Ui_Dialog(object):
         ax.grid(True)  
         self.canvas.draw()
 
+
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Python4"))
@@ -134,7 +161,6 @@ class Ui_Dialog(object):
         self.label_5.setText(_translate("Dialog", "Resistencia (Ω)"))
         self.label_6.setText(_translate("Dialog", "Capacitancia (µF)"))
         self.label_9.setText(_translate("Dialog", "Voltaje (V)"))
-
 
 
 if __name__ == "__main__":
