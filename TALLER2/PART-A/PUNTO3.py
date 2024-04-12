@@ -106,16 +106,16 @@ class Ui_Python3(object):
         
         if function_index == 0:  # Robot Cartesiano
             self.texto1.setText("3 articulaciones")
-            self.texto2.setText("   2 Rotacionales")
-            self.texto3.setText("   1 Prismática")
+            self.texto2.setText("   3 Prismáticas")
+            self.texto3.setText("   ")
             # Carga y muestra el diagrama cinemático del robot cartesiano
             pixmap = QtGui.QPixmap("TALLER2\IMAGENES\ROBOTCARTESIANO.jpg")
             self.scene.clear()
             self.scene.addPixmap(pixmap)
         elif function_index == 1:  # Robot Esférico
             self.texto1.setText("3 articulaciones")
-            self.texto2.setText("   3 Rotacionales")
-            self.texto3.setText("   ")
+            self.texto2.setText("   2 Rotacionales")
+            self.texto3.setText("   1 Prismática")
             # Carga y muestra el diagrama cinemático del robot cartesiano
             pixmap = QtGui.QPixmap("TALLER2\IMAGENES\ROBOTESFERICO.jpg")
             self.scene.clear()
