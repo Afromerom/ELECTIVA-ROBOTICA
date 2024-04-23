@@ -1,4 +1,5 @@
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -199,27 +200,6 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.label_17.setFont(font)
         self.label_17.setObjectName("label_17")
-        self.POS_X = QtWidgets.QTextEdit(Dialog)
-        self.POS_X.setGeometry(QtCore.QRect(470, 180, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(14)
-        self.POS_X.setFont(font)
-        self.POS_X.setObjectName("POS_X")
-        self.POS_Y = QtWidgets.QTextEdit(Dialog)
-        self.POS_Y.setGeometry(QtCore.QRect(470, 220, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(14)
-        self.POS_Y.setFont(font)
-        self.POS_Y.setObjectName("POS_Y")
-        self.POS_Z = QtWidgets.QTextEdit(Dialog)
-        self.POS_Z.setGeometry(QtCore.QRect(470, 260, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(14)
-        self.POS_Z.setFont(font)
-        self.POS_Z.setObjectName("POS_Z")
         self.GO_D = QtWidgets.QPushButton(Dialog)
         self.GO_D.setGeometry(QtCore.QRect(430, 300, 71, 23))
         font = QtGui.QFont()
@@ -272,6 +252,15 @@ class Ui_Dialog(object):
         self.DISP = QtWidgets.QWidget(Dialog)
         self.DISP.setGeometry(QtCore.QRect(350, 340, 271, 211))
         self.DISP.setObjectName("DISP")
+        self.POS_X = QtWidgets.QTextEdit(Dialog)
+        self.POS_X.setGeometry(QtCore.QRect(470, 180, 111, 31))
+        self.POS_X.setObjectName("POS_X")
+        self.POS_Y = QtWidgets.QTextEdit(Dialog)
+        self.POS_Y.setGeometry(QtCore.QRect(470, 220, 111, 31))
+        self.POS_Y.setObjectName("POS_Y")
+        self.POS_Z = QtWidgets.QTextEdit(Dialog)
+        self.POS_Z.setGeometry(QtCore.QRect(470, 260, 111, 31))
+        self.POS_Z.setObjectName("POS_Z")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -301,8 +290,6 @@ class Ui_Dialog(object):
         self.label_18.setText(_translate("Dialog", "MODO: "))
         self.label_19.setText(_translate("Dialog", "AUTOMÁTICO"))
         self.START_D.setText(_translate("Dialog", "START!"))
-
-
 
 if __name__ == "__main__":
     import sys
