@@ -16,7 +16,7 @@ class Ui_Dialog(object):
         self.label_8 = QtWidgets.QLabel(Dialog)
         self.label_8.setGeometry(QtCore.QRect(220, 10, 181, 101))
         self.label_8.setText("")
-        self.label_8.setPixmap(QtGui.QPixmap(":/newPrefix/ecci.jpg"))
+        self.label_8.setPixmap(QtGui.QPixmap("PROYECTO\IMAGENES\ecci.jpg"))
         self.label_8.setScaledContents(True)
         self.label_8.setObjectName("label_8")
         self.label_4 = QtWidgets.QLabel(Dialog)
@@ -301,7 +301,7 @@ class Ui_Dialog(object):
         self.label_18.setText(_translate("Dialog", "MODO: "))
         self.label_19.setText(_translate("Dialog", "AUTOMÁTICO"))
         self.START_D.setText(_translate("Dialog", "START!"))
-import logo1_rc
+
 
 
 if __name__ == "__main__":
