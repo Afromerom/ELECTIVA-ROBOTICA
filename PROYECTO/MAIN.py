@@ -1,5 +1,4 @@
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -15,13 +14,13 @@ class Ui_Dialog(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.label_8 = QtWidgets.QLabel(Dialog)
-        self.label_8.setGeometry(QtCore.QRect(220, 10, 181, 101))
+        self.label_8.setGeometry(QtCore.QRect(450, 20, 181, 101))
         self.label_8.setText("")
         self.label_8.setPixmap(QtGui.QPixmap("PROYECTO\IMAGENES\ecci.jpg"))
         self.label_8.setScaledContents(True)
         self.label_8.setObjectName("label_8")
         self.label_4 = QtWidgets.QLabel(Dialog)
-        self.label_4.setGeometry(QtCore.QRect(10, 90, 71, 21))
+        self.label_4.setGeometry(QtCore.QRect(360, 20, 61, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -38,7 +37,7 @@ class Ui_Dialog(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(10, 10, 161, 21))
+        self.label.setGeometry(QtCore.QRect(150, 10, 161, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -47,7 +46,7 @@ class Ui_Dialog(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_7 = QtWidgets.QLabel(Dialog)
-        self.label_7.setGeometry(QtCore.QRect(10, 30, 171, 21))
+        self.label_7.setGeometry(QtCore.QRect(160, 30, 171, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -261,6 +260,27 @@ class Ui_Dialog(object):
         self.POS_Z = QtWidgets.QTextEdit(Dialog)
         self.POS_Z.setGeometry(QtCore.QRect(470, 260, 111, 31))
         self.POS_Z.setObjectName("POS_Z")
+        self.label_20 = QtWidgets.QLabel(Dialog)
+        self.label_20.setGeometry(QtCore.QRect(10, 90, 231, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_20.setFont(font)
+        self.label_20.setObjectName("label_20")
+        self.label_21 = QtWidgets.QLabel(Dialog)
+        self.label_21.setGeometry(QtCore.QRect(230, 50, 231, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_21.setFont(font)
+        self.label_21.setObjectName("label_21")
+        self.label_22 = QtWidgets.QLabel(Dialog)
+        self.label_22.setGeometry(QtCore.QRect(230, 70, 231, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label_22.setFont(font)
+        self.label_22.setObjectName("label_22")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -290,6 +310,11 @@ class Ui_Dialog(object):
         self.label_18.setText(_translate("Dialog", "MODO: "))
         self.label_19.setText(_translate("Dialog", "AUTOMÁTICO"))
         self.START_D.setText(_translate("Dialog", "START!"))
+        self.label_20.setText(_translate("Dialog", "Gilber Alexander Cantor Quintero"))
+        self.label_21.setText(_translate("Dialog", "Lheidy Barragan V"))
+        self.label_22.setText(_translate("Dialog", "Kevin Sebastian Duenas Lozano"))
+
+
 
 if __name__ == "__main__":
     import sys
@@ -299,3 +324,4 @@ if __name__ == "__main__":
     ui.setupUi(Dialog)
     Dialog.show()
     sys.exit(app.exec_())
+
