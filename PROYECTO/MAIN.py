@@ -1,4 +1,5 @@
-
+import RPi.GPIO as GPIO
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -52,10 +53,16 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
+        #----------------------------------------------------------------|
         self.servo1 = QtWidgets.QSlider(Dialog)
         self.servo1.setGeometry(QtCore.QRect(80, 190, 171, 22))
         self.servo1.setOrientation(QtCore.Qt.Horizontal)
         self.servo1.setObjectName("servo1")
+        self.servo1.setMinimum(0) #Establece el minimo en 0
+        self.servo1.setMaximum(180) #Establece el maximo en 180
+        self.servo1.valueChanged.connect(self.actualizar_valor_servo1)
+        self.servo1.valueChanged.connect(self.controlar_servo1)
+        #----------------------------------------------------------------
         self.valor1 = QtWidgets.QLabel(Dialog)
         self.valor1.setGeometry(QtCore.QRect(270, 190, 51, 21))
         font = QtGui.QFont()
@@ -64,30 +71,43 @@ class Ui_Dialog(object):
         self.valor1.setFont(font)
         self.valor1.setText("")
         self.valor1.setObjectName("valor1")
-        self.servo1_2 = QtWidgets.QSlider(Dialog)
-        self.servo1_2.setGeometry(QtCore.QRect(80, 220, 171, 22))
-        self.servo1_2.setOrientation(QtCore.Qt.Horizontal)
-        self.servo1_2.setObjectName("servo1_2")
-        self.valor1_2 = QtWidgets.QLabel(Dialog)
-        self.valor1_2.setGeometry(QtCore.QRect(270, 220, 51, 21))
+        #----------------------------------------------------------------
+        self.servo2 = QtWidgets.QSlider(Dialog)
+        self.servo2.setGeometry(QtCore.QRect(80, 220, 171, 22))
+        self.servo2.setOrientation(QtCore.Qt.Horizontal)
+        self.servo2.setObjectName("servo2")
+        self.servo2.setMinimum(0) #Establece el minimo en 0
+        self.servo2.setMaximum(180) #Establece el maximo en 180
+        self.servo2.valueChanged.connect(self.actualizar_valor_servo2)
+        self.servo2.valueChanged.connect(self.controlar_servo2)
+        #----------------------------------------------------------------
+        self.valor2 = QtWidgets.QLabel(Dialog)
+        self.valor2.setGeometry(QtCore.QRect(270, 220, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
-        self.valor1_2.setFont(font)
-        self.valor1_2.setText("")
-        self.valor1_2.setObjectName("valor1_2")
-        self.servo1_3 = QtWidgets.QSlider(Dialog)
-        self.servo1_3.setGeometry(QtCore.QRect(80, 250, 171, 22))
-        self.servo1_3.setOrientation(QtCore.Qt.Horizontal)
-        self.servo1_3.setObjectName("servo1_3")
-        self.valor1_3 = QtWidgets.QLabel(Dialog)
-        self.valor1_3.setGeometry(QtCore.QRect(270, 250, 51, 21))
+        self.valor2.setFont(font)
+        self.valor2.setText("")
+        self.valor2.setObjectName("valor2")
+        #----------------------------------------------------------------
+        self.servo3 = QtWidgets.QSlider(Dialog)
+        self.servo3.setGeometry(QtCore.QRect(80, 250, 171, 22))
+        self.servo3.setOrientation(QtCore.Qt.Horizontal)
+        self.servo3.setObjectName("servo3")
+        self.servo3.setMinimum(0) #Establece el minimo en 0
+        self.servo3.setMaximum(180) #Establece el maximo en 180
+        self.servo3.valueChanged.connect(self.actualizar_valor_servo3)
+        self.servo3.valueChanged.connect(self.controlar_servo3)
+        #----------------------------------------------------------------
+        self.valor3 = QtWidgets.QLabel(Dialog)
+        self.valor3.setGeometry(QtCore.QRect(270, 250, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
-        self.valor1_3.setFont(font)
-        self.valor1_3.setText("")
-        self.valor1_3.setObjectName("valor1_3")
+        self.valor3.setFont(font)
+        self.valor3.setText("")
+        self.valor3.setObjectName("valor3")
+        #----------------------------------------------------------------
         self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setGeometry(QtCore.QRect(30, 140, 121, 41))
         font = QtGui.QFont()
@@ -284,6 +304,20 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        
+        # Set pin 11 as an output, and define as servo1 as PWM pin
+        GPIO.setup(11, GPIO.OUT)
+        self.servomotor1 = GPIO.PWM(11, 50)  # pin 11 for servo1, pulse 50Hz
+        GPIO.setup(12,GPIO.OUT)
+        self.servomotor2 = GPIO.PWM(12,50) # pin 12 for servo2
+        GPIO.setup(13,GPIO.OUT)
+        self.servomotor3 = GPIO.PWM(13,50) # pin 12 for servo2
+        
+        #Inicializar servos 
+        self.servomotor1.start(0)
+        self.servomotor2.start(0)
+        self.servomotor3.start(0)
+        
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -313,8 +347,33 @@ class Ui_Dialog(object):
         self.label_20.setText(_translate("Dialog", "Gilber Alexander Cantor Quintero"))
         self.label_21.setText(_translate("Dialog", "Lheidy Barragan V"))
         self.label_22.setText(_translate("Dialog", "Kevin Sebastian Duenas Lozano"))
+    
+    def controlar_servo1(self,value):
+        angle = value
+        self.servomotor1.ChangeDutyCycle(2+(angle/18))
+        time.sleep(0.005)
+        self.servomotor1.ChangeDutyCycle(0)
+        
+    def controlar_servo2(self,value):
+        angle = value
+        self.servomotor2.ChangeDutyCycle(2+(angle/18))
+        time.sleep(0.005)
+        self.servomotor2.ChangeDutyCycle(0)
+        
+    def controlar_servo3(self,value):
+        angle = value
+        self.servomotor3.ChangeDutyCycle(2+(angle/18))
+        time.sleep(0.005)
+        self.servomotor3.ChangeDutyCycle(0)        
 
-
+    def actualizar_valor_servo1(self,value):
+        self.valor1.setText(str(value))
+        
+    def actualizar_valor_servo2(self,value):
+        self.valor2.setText(str(value))    
+    
+    def actualizar_valor_servo2(self,value):
+        self.valor3.setText(str(value))   
 
 if __name__ == "__main__":
     import sys
