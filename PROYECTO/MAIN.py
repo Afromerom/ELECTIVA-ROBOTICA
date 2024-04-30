@@ -1,5 +1,10 @@
 import RPi.GPIO as GPIO
 import time
+from roboticstoolbox import *
+from spatialmath.base import *
+import math
+import numpy
+from sympy import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -309,15 +314,21 @@ class Ui_Dialog(object):
         GPIO.setup(11, GPIO.OUT)
         self.servomotor1 = GPIO.PWM(11, 50)  # pin 11 for servo1, pulse 50Hz
         GPIO.setup(12,GPIO.OUT)
-        self.servomotor2 = GPIO.PWM(12,50) # pin 12 for servo2
+        self.servomotor2 = GPIO.PWM(12,50) # pin 12 for servo2, pulse 50Hz
         GPIO.setup(13,GPIO.OUT)
-        self.servomotor3 = GPIO.PWM(13,50) # pin 12 for servo2
+        self.servomotor3 = GPIO.PWM(13,50) # pin 12 for servo3, pulse 50Hz
+        GPIO.setup(26,GPIO.OUT)
+        self.servomotor4 = GPIO.PWM(26,50) # pin 12 for servo4, pulse 50Hz
         
         #Inicializar servos 
         self.servomotor1.start(0)
         self.servomotor2.start(0)
         self.servomotor3.start(0)
+        self.servomotor4.start(0)
         
+        # Conexión de los botones a los métodos de control del servo4
+        self.PICK_D.clicked.connect(self.controlar_servo4_pick)
+        self.PLACE_D.clicked.connect(self.controlar_servo4_place)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -374,6 +385,18 @@ class Ui_Dialog(object):
     
     def actualizar_valor_servo2(self,value):
         self.valor3.setText(str(value))   
+        
+    def controlar_servo4_pick(self):
+        angle = 150  # Ángulo para la operación de recoger
+        self.servomotor4.ChangeDutyCycle(2 + (angle / 18))
+        time.sleep(0.005)
+        self.servomotor4.ChangeDutyCycle(0)
+
+    def controlar_servo4_place(self):
+        angle = 10  # Ángulo para la operación de colocar
+        self.servomotor4.ChangeDutyCycle(2 + (angle / 18))
+        time.sleep(0.005)
+        self.servomotor4.ChangeDutyCycle(0)
 
 if __name__ == "__main__":
     import sys
