@@ -1,10 +1,18 @@
+#import RPi.GPIO as GPIO
+#import time
+from roboticstoolbox import *
+from spatialmath.base import *
+import math
+import numpy
+from sympy import *
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_TALLER2R(object):
     def setupUi(self, TALLER2R):
         TALLER2R.setObjectName("TALLER2R")
-        TALLER2R.resize(588, 438)
+        TALLER2R.resize(671, 438)
         self.label_4 = QtWidgets.QLabel(TALLER2R)
         self.label_4.setGeometry(QtCore.QRect(20, 150, 71, 21))
         font = QtGui.QFont()
@@ -37,7 +45,7 @@ class Ui_TALLER2R(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.label_8 = QtWidgets.QLabel(TALLER2R)
-        self.label_8.setGeometry(QtCore.QRect(340, 10, 181, 101))
+        self.label_8.setGeometry(QtCore.QRect(380, 10, 181, 101))
         self.label_8.setText("")
         self.label_8.setPixmap(QtGui.QPixmap("TALLER3\IMAGENES\ecci.jpg"))
         self.label_8.setScaledContents(True)
@@ -55,7 +63,7 @@ class Ui_TALLER2R(object):
         self.DISP.setGeometry(QtCore.QRect(10, 200, 271, 181))
         self.DISP.setObjectName("DISP")
         self.label_5 = QtWidgets.QLabel(TALLER2R)
-        self.label_5.setGeometry(QtCore.QRect(290, 120, 131, 21))
+        self.label_5.setGeometry(QtCore.QRect(290, 110, 131, 21))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -67,9 +75,9 @@ class Ui_TALLER2R(object):
         self.X_LABEL = QtWidgets.QTextEdit(TALLER2R)
         self.X_LABEL.setGeometry(QtCore.QRect(310, 150, 71, 31))
         self.X_LABEL.setObjectName("X_LABEL")
-        self.X_LABEL_2 = QtWidgets.QTextEdit(TALLER2R)
-        self.X_LABEL_2.setGeometry(QtCore.QRect(390, 150, 71, 31))
-        self.X_LABEL_2.setObjectName("X_LABEL_2")
+        self.Y_LABEL = QtWidgets.QTextEdit(TALLER2R)
+        self.Y_LABEL.setGeometry(QtCore.QRect(390, 150, 71, 31))
+        self.Y_LABEL.setObjectName("Y_LABEL")
         self.Cordenadas = QtWidgets.QPushButton(TALLER2R)
         self.Cordenadas.setGeometry(QtCore.QRect(480, 150, 71, 31))
         self.Cordenadas.setObjectName("Cordenadas")
@@ -97,10 +105,10 @@ class Ui_TALLER2R(object):
         self.label_9.setFont(font)
         self.label_9.setObjectName("label_9")
         self.Nico_boton = QtWidgets.QPushButton(TALLER2R)
-        self.Nico_boton.setGeometry(QtCore.QRect(360, 270, 61, 31))
+        self.Nico_boton.setGeometry(QtCore.QRect(370, 270, 61, 31))
         self.Nico_boton.setObjectName("Nico_boton")
         self.Andres_boton = QtWidgets.QPushButton(TALLER2R)
-        self.Andres_boton.setGeometry(QtCore.QRect(420, 270, 51, 31))
+        self.Andres_boton.setGeometry(QtCore.QRect(450, 270, 51, 31))
         self.Andres_boton.setObjectName("Andres_boton")
         self.label_10 = QtWidgets.QLabel(TALLER2R)
         self.label_10.setGeometry(QtCore.QRect(300, 310, 181, 21))
@@ -112,9 +120,9 @@ class Ui_TALLER2R(object):
         font.setWeight(50)
         self.label_10.setFont(font)
         self.label_10.setObjectName("label_10")
-        self.X_LABEL_3 = QtWidgets.QTextEdit(TALLER2R)
-        self.X_LABEL_3.setGeometry(QtCore.QRect(310, 330, 161, 31))
-        self.X_LABEL_3.setObjectName("X_LABEL_3")
+        self.NOMBREP = QtWidgets.QTextEdit(TALLER2R)
+        self.NOMBREP.setGeometry(QtCore.QRect(310, 330, 161, 31))
+        self.NOMBREP.setObjectName("NOMBREP")
         self.Nombreperso = QtWidgets.QPushButton(TALLER2R)
         self.Nombreperso.setGeometry(QtCore.QRect(480, 330, 101, 31))
         self.Nombreperso.setObjectName("Nombreperso")
@@ -129,16 +137,16 @@ class Ui_TALLER2R(object):
         self.label_11.setFont(font)
         self.label_11.setObjectName("label_11")
         self.Chevroletboton = QtWidgets.QPushButton(TALLER2R)
-        self.Chevroletboton.setGeometry(QtCore.QRect(300, 390, 71, 31))
+        self.Chevroletboton.setGeometry(QtCore.QRect(310, 390, 71, 31))
         self.Chevroletboton.setObjectName("Chevroletboton")
         self.renaultboton = QtWidgets.QPushButton(TALLER2R)
-        self.renaultboton.setGeometry(QtCore.QRect(380, 390, 61, 31))
+        self.renaultboton.setGeometry(QtCore.QRect(400, 390, 61, 31))
         self.renaultboton.setObjectName("renaultboton")
         self.kiaboton = QtWidgets.QPushButton(TALLER2R)
-        self.kiaboton.setGeometry(QtCore.QRect(450, 390, 51, 31))
+        self.kiaboton.setGeometry(QtCore.QRect(480, 390, 51, 31))
         self.kiaboton.setObjectName("kiaboton")
         self.mercedeboton = QtWidgets.QPushButton(TALLER2R)
-        self.mercedeboton.setGeometry(QtCore.QRect(510, 390, 71, 31))
+        self.mercedeboton.setGeometry(QtCore.QRect(560, 390, 71, 31))
         self.mercedeboton.setObjectName("mercedeboton")
         self.label_12 = QtWidgets.QLabel(TALLER2R)
         self.label_12.setGeometry(QtCore.QRect(10, 180, 131, 21))
@@ -171,22 +179,107 @@ class Ui_TALLER2R(object):
         font.setPointSize(12)
         self.label_15.setFont(font)
         self.label_15.setObjectName("label_15")
-        self.Andres_boton_2 = QtWidgets.QPushButton(TALLER2R)
-        self.Andres_boton_2.setGeometry(QtCore.QRect(470, 270, 51, 31))
-        self.Andres_boton_2.setObjectName("Andres_boton_2")
-        self.Andres_boton_3 = QtWidgets.QPushButton(TALLER2R)
-        self.Andres_boton_3.setGeometry(QtCore.QRect(310, 270, 51, 31))
-        self.Andres_boton_3.setObjectName("Andres_boton_3")
-        self.Andres_boton_4 = QtWidgets.QPushButton(TALLER2R)
-        self.Andres_boton_4.setGeometry(QtCore.QRect(520, 270, 51, 31))
-        self.Andres_boton_4.setObjectName("Andres_boton_4")
+        self.Gilber_boton = QtWidgets.QPushButton(TALLER2R)
+        self.Gilber_boton.setGeometry(QtCore.QRect(510, 270, 51, 31))
+        self.Gilber_boton.setObjectName("Gilber_boton")
+        self.Lheidy_boton = QtWidgets.QPushButton(TALLER2R)
+        self.Lheidy_boton.setGeometry(QtCore.QRect(310, 270, 51, 31))
+        self.Lheidy_boton.setObjectName("Lheidy_boton")
+        self.Kevin_boton = QtWidgets.QPushButton(TALLER2R)
+        self.Kevin_boton.setGeometry(QtCore.QRect(580, 270, 51, 31))
+        self.Kevin_boton.setObjectName("Kevin_boton")
+        self.label_16 = QtWidgets.QLabel(TALLER2R)
+        self.label_16.setGeometry(QtCore.QRect(310, 130, 131, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_16.setFont(font)
+        self.label_16.setObjectName("label_16")
+        self.label_17 = QtWidgets.QLabel(TALLER2R)
+        self.label_17.setGeometry(QtCore.QRect(390, 130, 131, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_17.setFont(font)
+        self.label_17.setObjectName("label_17")
+        self.label_18 = QtWidgets.QLabel(TALLER2R)
+        self.label_18.setGeometry(QtCore.QRect(560, 140, 131, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_18.setFont(font)
+        self.label_18.setObjectName("label_18")
+        self.label_19 = QtWidgets.QLabel(TALLER2R)
+        self.label_19.setGeometry(QtCore.QRect(560, 160, 131, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_19.setFont(font)
+        self.label_19.setObjectName("label_19")
+        self.teta1 = QtWidgets.QLabel(TALLER2R)
+        self.teta1.setGeometry(QtCore.QRect(620, 140, 41, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.teta1.setFont(font)
+        self.teta1.setText("")
+        self.teta1.setObjectName("teta1")
+        self.teta2 = QtWidgets.QLabel(TALLER2R)
+        self.teta2.setGeometry(QtCore.QRect(620, 160, 41, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.teta2.setFont(font)
+        self.teta2.setText("")
+        self.teta2.setObjectName("teta2")
 
         self.retranslateUi(TALLER2R)
         QtCore.QMetaObject.connectSlotsByName(TALLER2R)
+        #----------------------------------------------------------------
+        #Declaracion de puertos 
+        #----------------------------------------------------------------
+        # Set pin 11 as an output, and define as servo1 as PWM pin
+        #GPIO.setup(11, GPIO.OUT)
+        #self.servomotor1 = GPIO.PWM(11, 50)  # pin 11 for servo1, pulse 50Hz
+        #GPIO.setup(12,GPIO.OUT)
+        #self.servomotor2 = GPIO.PWM(12,50) # pin 12 for servo2, pulse 50Hz
+        #----------------------------------------------------------------
+        
+        
+        #----------------------------------------------------------------
+        #Inicializar servos 
+        #----------------------------------------------------------------
+        #self.servomotor1.start(0)
+        #self.servomotor2.start(0)       
+        #----------------------------------------------------------------
+        #----------------------------------------------------------------
+        #Funcion para dibujar las coordeanadas  
+        #----------------------------------------------------------------
+        self.Area_Trabajo.clicked.connect(self.mostrar_area_de_trabajo)
+        
+        self.Cordenadas.clicked.connect(self.toma_coordenadas)
 
     def retranslateUi(self, TALLER2R):
         _translate = QtCore.QCoreApplication.translate
-        TALLER2R.setWindowTitle(_translate("TALLER2R", "TALLER"))
+        TALLER2R.setWindowTitle(_translate("TALLER2R", "TALLER3"))
         self.label_4.setText(_translate("TALLER2R", "2024 - 1"))
         self.label_7.setText(_translate("TALLER2R", "Ingeniería Mecatrónica"))
         self.label_3.setText(_translate("TALLER2R", "Andrés Felipe Romero Medina"))
@@ -210,11 +303,30 @@ class Ui_TALLER2R(object):
         self.label_13.setText(_translate("TALLER2R", "Gilber Alexander Cantor Quintero"))
         self.label_14.setText(_translate("TALLER2R", "Lheidy Barragan V"))
         self.label_15.setText(_translate("TALLER2R", "Kevin Sebastian Duenas Lozano"))
-        self.Andres_boton_2.setText(_translate("TALLER2R", "GILBER"))
-        self.Andres_boton_3.setText(_translate("TALLER2R", "LHEIDY"))
-        self.Andres_boton_4.setText(_translate("TALLER2R", "KEVIN"))
-
-
+        self.Gilber_boton.setText(_translate("TALLER2R", "GILBER"))
+        self.Lheidy_boton.setText(_translate("TALLER2R", "LHEIDY"))
+        self.Kevin_boton.setText(_translate("TALLER2R", "KEVIN"))
+        self.label_16.setText(_translate("TALLER2R", "Eje X"))
+        self.label_17.setText(_translate("TALLER2R", "Eje Y"))
+        self.label_18.setText(_translate("TALLER2R", "Servo_1"))
+        self.label_19.setText(_translate("TALLER2R", "Servo_2"))
+        
+    def mostrar_area_de_trabajo(self):
+          print("Imprimo area")
+          angle1 = 150  
+          self.servomotor1.ChangeDutyCycle(2 + (angle1 / 18))
+          time.sleep(0.005)
+          self.servomotor1.ChangeDutyCycle(0)
+          angle2 = 150  
+          self.servomotor2.ChangeDutyCycle(2 + (angle2 / 18))
+          time.sleep(0.005)
+          self.servomotor2.ChangeDutyCycle(0)
+    
+    def toma_coordenadas(self):
+        print("Imprimo coordenadas")
+    
+        
+        
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
