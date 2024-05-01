@@ -3,9 +3,12 @@ import time
 from roboticstoolbox import *
 from spatialmath.base import *
 import math
-import numpy
+import numpy as np
 from sympy import *
 from PyQt5 import QtCore, QtGui, QtWidgets
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
 
 
 class Ui_Dialog(object):
@@ -329,6 +332,12 @@ class Ui_Dialog(object):
         # Conexión de los botones a los métodos de control del servo4
         self.PICK_D.clicked.connect(self.controlar_servo4_pick)
         self.PLACE_D.clicked.connect(self.controlar_servo4_place)
+        self.GO_D.clicked.connect(self.ejecutar_cinematica_inversa)
+        
+        # Crear lienzo para la gráfica
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvas(self.fig)
+        self.DISP.layout().addWidget(self.canvas)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -397,6 +406,59 @@ class Ui_Dialog(object):
         self.servomotor4.ChangeDutyCycle(2 + (angle / 18))
         time.sleep(0.005)
         self.servomotor4.ChangeDutyCycle(0)
+        
+    def ejecutar_cinematica_inversa(self):
+        l1 = 10
+        l2 = 10
+        l3 = 10
+
+        # Obtener valores de POS_X, POS_Y, POS_Z
+        Px = float(self.POS_X.toPlainText())
+        Py = float(self.POS_Y.toPlainText())
+        Pz = float(self.POS_Z.toPlainText())
+
+        # Cinemática inversa
+        e = np.sqrt(Px**2 + Py**2)
+        c = Pz - l1
+        b = np.sqrt(e**2 + c**2)
+        # Theta 1
+        theta1 = float(np.arctan2(Py, Px))
+        print(f'theta 1 = {np.rad2deg(theta1):.4f}')
+        # Theta 3
+        cos_theta3 = (b**2 - l2**2 - l3**2) / (2 * l2 * l3)
+        sen_theta3 = np.sqrt(1 - (cos_theta3)**2)
+        theta3 = float(np.arctan2(sen_theta3, cos_theta3))
+        print(f'theta 3 = {np.rad2deg(theta3):.4f}')
+        # Theta 2
+        alpha = math.atan2(c, e)
+        phi = math.atan2(l3 * sen_theta3, l2 + l3 * cos_theta3)
+        theta2 = float(alpha - phi)
+        if theta2 <= -np.pi:
+            theta2 = (2 * np.pi) + theta2
+
+        print(f'theta 2 = {np.rad2deg(theta2):.4f}')
+        #-------------
+
+        # Escribir los ángulos en los sliders de los servos
+        self.servo1.setValue(int(np.rad2deg(theta1)))
+        self.servo2.setValue(int(np.rad2deg(theta2)))
+        self.servo3.setValue(int(np.rad2deg(theta3)))
+        
+        # Crear el robot
+        q1 = theta1
+        q2 = theta2
+        q3 = theta3
+        R = []
+        R.append(RevoluteDH(d=l1, alpha=np.pi/2, a=0, offset=0))
+        R.append(RevoluteDH(d=0, alpha=0, a=l2, offset=0))
+        R.append(RevoluteDH(d=0, alpha=0, a=l3, offset=0))
+        Robot = DHRobot(R, name='Azulito')
+
+        # Graficar el robot
+        self.ax.clear()
+        Robot.plot(q=[q1, q2, q3], block=False, backend='matplotlib', ax=self.ax)
+        self.canvas.draw()
+
 
 if __name__ == "__main__":
     import sys

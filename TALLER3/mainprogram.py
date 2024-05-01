@@ -3,8 +3,9 @@
 from roboticstoolbox import *
 from spatialmath.base import *
 import math
-import numpy
+import numpy as np
 from sympy import *
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -275,7 +276,8 @@ class Ui_TALLER2R(object):
         #----------------------------------------------------------------
         self.Area_Trabajo.clicked.connect(self.mostrar_area_de_trabajo)
         
-        self.Cordenadas.clicked.connect(self.toma_coordenadas)
+        self.Cordenadas.clicked.connect(self.cinematica_inversa2r)
+        
 
     def retranslateUi(self, TALLER2R):
         _translate = QtCore.QCoreApplication.translate
@@ -325,7 +327,54 @@ class Ui_TALLER2R(object):
     def toma_coordenadas(self):
         print("Imprimo coordenadas")
     
+    def cinematica_inversa2r(self):
+        print("Imprimo cinematica inversa")  
+    
+        l1 = 10
+        l2 = 10
+
+        # Cinemática inversa
+        Px = float(self.X_LABEL.toPlainText())
+        Py = float(self.Y_LABEL.toPlainText())
+
+        b = math.sqrt(Px**2+Py**2)
+        # Theta 2
+        cos_theta2 = (b**2-l2**2-l1**2)/(2*l1*l2)
+        sen_theta2 = math.sqrt(1-(cos_theta2)**2)#(+)codo abajo y (-)codo arriba
+        theta2 = math.atan2(sen_theta2, cos_theta2)
+        print(f'theta 2 = {numpy.rad2deg(theta2):.4f}')
+        # Theta 1
+        alpha = math.atan2(Py,Px)
+        phi = math.atan2(l2*sen_theta2, l1+l2*cos_theta2)
+        theta1 = alpha - phi
+        print(f'theta 1 = {numpy.rad2deg(theta1):.4f}')
+        #-------------
+
+        q1 = theta1
+        q2 = theta2
         
+        # Escribir los ángulos en los sliders de los servos
+        self.servo1.setValue(int(np.rad2deg(theta1)))
+        self.servo2.setValue(int(np.rad2deg(theta2)))
+
+        # Actualizar los valores de theta1 y theta2 en los objetos teta1 y teta2
+        self.teta1.setText(f"{np.rad2deg(theta1):.2f}")
+        self.teta2.setText(f"{np.rad2deg(theta2):.2f}")
+        #----------------------------------------------------------------
+        R = []
+        R.append(RevoluteDH(d=0, alpha=0, a=l1, offset=0))
+        R.append(RevoluteDH(d=0, alpha=0, a=l2, offset=0))
+
+        Robot = DHRobot(R, name='Bender')
+        print(Robot)
+
+        Robot.teach([q1, q2], 'rpy/zyx', limits=[-30,30,-30,30,-30,30])
+
+        #zlim([-15,30]);
+
+        MTH = Robot.fkine([q1,q2])
+        print(MTH)
+        print(f'Roll, Pitch, Yaw = {tr2rpy(MTH.R, 'deg', 'zyx')}')
         
 if __name__ == "__main__":
     import sys
