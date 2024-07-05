@@ -437,6 +437,7 @@ class Ui_Dialog(object):
             theta2 = (2 * np.pi) + theta2
 
         print(f'theta 2 = {np.rad2deg(theta2):.4f}')
+    
         #-------------
 
         # Escribir los ángulos en los sliders de los servos
