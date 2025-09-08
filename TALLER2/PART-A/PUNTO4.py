@@ -58,6 +58,9 @@ class Ui_Dialog(object):
         self.horizontalSlider1.setGeometry(QtCore.QRect(140, 590, 731, 22))
         self.horizontalSlider1.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider1.setObjectName("horizontalSlider1")
+        self.horizontalSlider1.setMinimum(999)  # Establecer mínimo en 0
+        self.horizontalSlider1.setSingleStep
+        self.horizontalSlider1.setMaximum(1005)  # Establecer máximo en 180
         self.horizontalSlider1.valueChanged.connect(self.actualizar_valor_resistencia)
         self.horizontalSlider_2 = QtWidgets.QSlider(Dialog)
         self.horizontalSlider_2.setGeometry(QtCore.QRect(140, 620, 731, 22))
@@ -135,7 +138,7 @@ class Ui_Dialog(object):
         capacitancia = (self.horizontalSlider_2.value()) * 1e-6    
         voltaje = self.horizontalSlider_3.value()
         
-        tiempo = np.linspace(0, 5 * resistencia * capacitancia, 1000)
+        tiempo = np.linspace(0, 5 * resistencia *capacitancia, 1000000)
         carga = voltaje * (1 - np.exp(-tiempo / (resistencia * capacitancia)))
         descarga = voltaje * np.exp(-tiempo / (resistencia * capacitancia))
         
